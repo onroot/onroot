@@ -1,1 +1,5 @@
 <p>cards works!</p>
+@for (event of events; track $index) {
+  <app-card [event]="event" />
+}
+
