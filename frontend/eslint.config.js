@@ -2,8 +2,10 @@
 const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 
 module.exports = tseslint.config(
+  eslintPluginPrettierRecommended,
   {
     files: ["**/*.ts"],
     extends: [
@@ -30,7 +32,8 @@ module.exports = tseslint.config(
           style: "kebab-case",
         },
       ],
-      "indent": ["error", 4]
+      indent: ["error", 4],
+      "max-len": ["error", { code: 100, ignoreUrls: true }],
     },
   },
   {
@@ -40,5 +43,5 @@ module.exports = tseslint.config(
       ...angular.configs.templateAccessibility,
     ],
     rules: {},
-  }
+  },
 );
