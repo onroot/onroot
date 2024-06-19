@@ -8,9 +8,8 @@ describe('ExampleToImgComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ExampleToImgComponent]
-        })
-            .compileComponents();
+            imports: [ExampleToImgComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(ExampleToImgComponent);
         component = fixture.componentInstance;

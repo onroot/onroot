@@ -8,15 +8,15 @@ import { MockEventDataService } from '../mock-event-data.service';
     standalone: true,
     imports: [CardsComponent, RouterLink],
     templateUrl: './create-page.component.html',
-    styleUrl: './create-page.component.css'
+    styleUrl: './create-page.component.css',
 })
 export class CreatePageComponent {
     constructor(
         private router: Router,
-        private mockEventData: MockEventDataService
-    ) { }
+        private mockEventData: MockEventDataService,
+    ) {}
 
     pushQs() {
-        this.router.navigate([], { queryParams: this.mockEventData.asObj() })
+        this.router.navigate([], { queryParams: this.mockEventData.asObj() });
     }
 }

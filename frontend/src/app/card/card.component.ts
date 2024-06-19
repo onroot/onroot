@@ -6,7 +6,7 @@ import { Event } from '../shared/models/event';
     standalone: true,
     imports: [],
     templateUrl: './card.component.html',
-    styleUrl: './card.component.css'
+    styleUrl: './card.component.css',
 })
 export class CardComponent {
     @Input({ required: true }) event!: Event;

@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from 'zod';
 
 export const eventSchema = z.object({
     /** title */
@@ -10,7 +10,7 @@ export const eventSchema = z.object({
     /** image url */
     i: z.string(),
     /** notes */
-    n: z.string()
-})
+    n: z.string(),
+});
 
 export type Event = z.infer<typeof eventSchema>;
