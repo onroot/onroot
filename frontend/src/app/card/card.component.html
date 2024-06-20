@@ -1,3 +1,85 @@
-<div class="rounded-3xl border-t-8 border-teal-200 bg-blue-50 px-5 py-4">
-  <b class="text-wrap text-2xl">{{ event.title }}</b>
-</div>
+<button class="flex cursor-default select-text space-x-5 text-left">
+  <div class="overflow-hidden rounded-3xl shadow-xl">
+    <div class="h-4 bg-teal-200"></div>
+    <div class="flex flex-col gap-3 bg-blue-50 px-5 py-4">
+      <h3
+        class="cursor-text text-wrap text-2xl font-semibold"
+        contenteditable="true"
+      >
+        {{ event.title }}
+      </h3>
+      <section class="flex items-start space-x-1.5">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="inline-block size-7 min-w-fit"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+          />
+        </svg>
+        <p
+          contenteditable=""
+          class="inline-block cursor-text text-lg font-medium"
+        >
+          {{ event.placeName }}
+        </p>
+        <div class="flex-1"></div>
+        <a
+          href="{{ event.placeRouteUrl }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-7 min-w-fit"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"
+            />
+          </svg>
+        </a>
+      </section>
+      <section class="flex justify-around font-medium">
+        <div class="border-b-2 border-b-gray-300">
+          <label for="start-time">From</label>
+          <ngx-timepicker-field
+            id="start-time"
+            [format]="12"
+            [controlOnly]="true"
+            class="inline-block"
+          ></ngx-timepicker-field>
+        </div>
+        <div class="border-b-2 border-b-gray-300">
+          <label for="end-time">To</label>
+          <ngx-timepicker-field
+            id="end-time"
+            [format]="12"
+            [controlOnly]="true"
+            class="inline-block"
+          ></ngx-timepicker-field>
+        </div>
+      </section>
+      <img src="{{ event.imgUrl }}" class="w-full rounded object-cover" />
+      <p class="cursor-text text-lg font-medium" [contentEditable]="true">
+        {{ event.notes }}
+      </p>
+    </div>
+  </div>
+</button>

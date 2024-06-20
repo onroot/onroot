@@ -41,21 +41,26 @@ export class SimpleEvent {
             n: this.notes,
         };
     }
+
+    static fromUrlExportableEvent(e: UrlExportableEvent): SimpleEvent {
+        return new SimpleEvent(e.t, e.l, e.p, e.s, e.e, e.i, e.n);
+    }
 }
 
 export class Event extends SimpleEvent {
     constructor(
-        title: string,
-        placeId: string,
-        placeName: string,
-        startTime: number,
-        endTime: number,
-        imgUrl: string,
-        notes: string,
-
+        event: SimpleEvent,
         public id: number,
         public placeRouteUrl: string,
     ) {
-        super(title, placeId, placeName, startTime, endTime, imgUrl, notes);
+        super(
+            event.title,
+            event.placeId,
+            event.placeName,
+            event.startTime,
+            event.endTime,
+            event.imgUrl,
+            event.notes,
+        );
     }
 }

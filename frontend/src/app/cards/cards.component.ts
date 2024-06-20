@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UrlExportableEventSchema, UrlExportableEvent, Event } from '../shared/models/event';
+import {
+    UrlExportableEventSchema,
+    Event,
+    SimpleEvent,
+} from '../shared/models/event';
 import qs from 'qs';
 import { MockEventDataService } from '../mock-event-data.service';
 import { CardComponent } from '../card/card.component';
@@ -23,8 +27,11 @@ export class CardsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.consumeParamEvents();
-        // this.events = this.mockData.asArr();
+        // this.consumeParamEvents();
+        this.mockData
+            .asArr()
+            .map(SimpleEvent.fromUrlExportableEvent)
+            .map((event: SimpleEvent) => this.addEvent(event));
     }
 
     consumeParamEvents() {
@@ -36,11 +43,13 @@ export class CardsComponent implements OnInit {
         const validatedEvents = UrlExportableEventSchema.array().safeParse(parsedQueryEvents);
         if (validatedEvents.data === undefined) return;
 
-        validatedEvents.data.map((e: UrlExportableEvent) => this.addUrlExportableEvent(e));
+        validatedEvents.data
+            .map(SimpleEvent.fromUrlExportableEvent)
+            .map((event: SimpleEvent) => this.addEvent(event));
     }
 
-    addUrlExportableEvent(e: UrlExportableEvent) {
-        const event = new Event(e.t, e.l, e.p, e.s, e.e, e.i, e.n, ++this.newId, '');
+    addEvent(e: SimpleEvent) {
+        const event = new Event(e, ++this.newId, 'https://example.com');
         this.events.push(event);
     }
 }

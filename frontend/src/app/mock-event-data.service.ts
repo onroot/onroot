@@ -14,7 +14,7 @@ export class MockEventDataService {
                 p: 'Rome, Italy',
                 s: 720,
                 e: 750,
-                i: '',
+                i: 'https://s1.bwallpapers.com/wallpapers/2014/05/29/leaning-tower-of-pisa_121750831.jpg',
                 n: 'Notes on Italy',
             },
             {
@@ -23,7 +23,7 @@ export class MockEventDataService {
                 p: 'Ocean',
                 s: 600,
                 e: 610,
-                i: '',
+                i: 'https://www.empirecovers.ca/images/thumbs/0008503_triton-mooring-boat-cover.jpeg',
                 n: 'Notes on the Ark',
             },
         ],

@@ -1,0 +1,36 @@
+:host ::ng-deep .ngx-timepicker {
+  align-items: baseline !important;
+  border-bottom: 0 !important;
+}
+
+:host ::ng-deep .ngx-timepicker-control__arrow {
+  display: none !important;
+}
+
+:host ::ng-deep .ngx-timepicker__time-colon {
+  margin-left: 0 !important;
+}
+
+:host ::ng-deep .ngx-timepicker-control__input {
+  width: 3.3ch !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+}
+
+:host ::ng-deep .ngx-timepicker-control {
+  width: 3.1ch !important;
+  padding: 0 !important;
+}
+
+:host ::ng-deep .period-control__arrow {
+  display: none;
+}
+
+:host ::ng-deep .period-control__button {
+  width: 4ch !important;
+}
+
+:host ::ng-deep .ngx-timepicker--disabled {
+  background: transparent !important;
+}
+
