@@ -12,6 +12,9 @@ module.exports = {
       fontFamily: {
         sans: ['"Roboto"', ...defaultTheme.fontFamily.sans],
       },
+      inset: {
+        '1/6': '16.666667%'
+      }
     },
   },
   plugins: [],

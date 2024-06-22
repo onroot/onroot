@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import qs from 'qs';
-import { UrlExportableEvent, SimpleEvent } from './shared/models/event';
+import { UrlExportableEvent } from './shared/models/event';
 
 @Injectable({
     providedIn: 'root',
@@ -12,8 +12,8 @@ export class MockEventDataService {
                 t: 'Leaning Tower of Pisa',
                 l: '12345',
                 p: 'Rome, Italy',
-                s: 720,
-                e: 750,
+                s: 1719016200,
+                e: 1718930100,
                 i: 'https://s1.bwallpapers.com/wallpapers/2014/05/29/leaning-tower-of-pisa_121750831.jpg',
                 n: 'Notes on Italy',
             },
@@ -21,10 +21,19 @@ export class MockEventDataService {
                 t: "Noah's Ark",
                 l: '54321',
                 p: 'Ocean',
-                s: 600,
-                e: 610,
+                s: 1719016200,
+                e: 1719016200,
                 i: 'https://www.empirecovers.ca/images/thumbs/0008503_triton-mooring-boat-cover.jpeg',
                 n: 'Notes on the Ark',
+            },
+            {
+                t: 'Null stuffs',
+                l: null,
+                p: null,
+                s: null,
+                e: null,
+                i: null,
+                n: null,
             },
         ],
     };
@@ -38,7 +47,8 @@ export class MockEventDataService {
     }
 
     asObj() {
-        const str = qs.stringify(this.events, { allowDots: true });
+        const str = qs.stringify(this.events, { allowDots: true, skipNulls: true });
+        console.log(str);
         return { events: str };
     }
 }

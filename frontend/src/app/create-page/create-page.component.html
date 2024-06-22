@@ -1,5 +1,8 @@
 <h1 class="text-2xl">You are on the create-page</h1>
 <button class="rounded bg-red-400" (click)="pushQs()">Push Qs</button>
-<div class="flex justify-center custom-pattern-bg">
-  <app-cards class="w-5/12 min-w-80 max-w-3xl" />
+<button (click)="changeFirstTitle()">change first's title</button>
+<span>First title: {{getFirstTitle()}}</span>
+<button (click)="changeFirstTime()" class="bg-teal-500">change time</button>
+<div class="custom-pattern-bg flex justify-center">
+  <app-cards class="w-6/12 min-w-80 max-w-5xl absolute right-1/6" style="right: 16.7%" />
 </div>
