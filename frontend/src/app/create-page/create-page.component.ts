@@ -30,7 +30,7 @@ export class CreatePageComponent implements OnInit {
     }
 
     changeFirstTime() {
-        return this.eventsService.getEvents()()[0].startTime = 2389042;
+        this.eventsService.getEvents()()[0].startTime = 2389042;
     }
 
     ngOnInit(): void {

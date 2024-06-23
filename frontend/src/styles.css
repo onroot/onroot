@@ -2,3 +2,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-pattern-bg {
+  background: conic-gradient(
+      from -45deg at calc(100% / 3) calc(100% / 3),
+      #fffaf8 90deg,
+      #0000 0
+    ),
+    conic-gradient(
+      from -135deg at calc(100% / 3) calc(2 * 100% / 3),
+      #fffaf8 90deg,
+      #faf4f1 0 135deg,
+      #0000 0
+    ),
+    conic-gradient(
+      from 135deg at calc(2 * 100% / 3) calc(2 * 100% / 3),
+      #fffaf8 90deg,
+      #faf4f1 0 135deg,
+      #0000 0
+    ),
+    conic-gradient(
+      from 45deg at calc(2 * 100% / 3) calc(100% / 3),
+      #fffaf8 90deg,
+      #faf4f1 0 135deg,
+      #0000 0,
+      #fffaf8 0 225deg,
+      #faf4f1 0
+    );
+  background-size: 200px 200px;
+}

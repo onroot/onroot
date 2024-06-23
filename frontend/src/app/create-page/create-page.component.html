@@ -1,8 +1,10 @@
-<h1 class="text-2xl">You are on the create-page</h1>
-<button class="rounded bg-red-400" (click)="pushQs()">Push Qs</button>
-<button (click)="changeFirstTitle()">change first's title</button>
-<span>First title: {{getFirstTitle()}}</span>
-<button (click)="changeFirstTime()" class="bg-teal-500">change time</button>
-<div class="custom-pattern-bg flex justify-center">
-  <app-cards class="w-6/12 min-w-80 max-w-5xl absolute right-1/6" style="right: 16.7%" />
+<div class="bg-white">
+  <h1 class="text-2xl">You are on the create-page</h1>
+  <button class="rounded bg-red-400" (click)="pushQs()">Push Qs</button>
+  <button (click)="changeFirstTitle()">change first's title</button>
+  <span>First title: {{ getFirstTitle() }}</span>
+  <button (click)="changeFirstTime()" class="bg-teal-500">change time</button>
+</div>
+<div class="flex w-full justify-center">
+  <app-cards class="absolute right-1/6 w-6/12 min-w-96 max-w-5xl" />
 </div>

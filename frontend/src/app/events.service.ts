@@ -34,9 +34,6 @@ export class EventsService {
     }
 
     removeEvent(index: number): void {
-        this.eventsSig.update((events) => [
-            ...events.slice(0, index),
-            ...events.slice(index + 1),
-        ]);
+        this.eventsSig.update((events) => [...events.slice(0, index), ...events.slice(index + 1)]);
     }
 }

@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { z } from 'zod';
 
 export const UrlExportableEventSchema = z.object({
@@ -88,6 +87,7 @@ export class Event extends SimpleEvent {
         return new Event(simpleEvent, id, placeRouteUrl);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static withPatch(event: Event, patch: any, member: EventMember): Event {
         switch (member) {
             case EventMember.title:

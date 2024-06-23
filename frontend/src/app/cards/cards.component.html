@@ -1,3 +1,7 @@
 @for (event of eventsSig(); track event.id) {
-  <app-card class="my-5 block" [event]="event" (updateEvent)="updateEvent($index, $event)" />
+  <app-card
+    class="my-5 block"
+    [event]="event"
+    (updateEvent)="updateEvent($index, $event)"
+  />
 }
