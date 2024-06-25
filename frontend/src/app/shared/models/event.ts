@@ -8,9 +8,9 @@ export const UrlExportableEventSchema = z.object({
     /** placeName */
     p: z.string().nullable().default(null),
     /** start time */
-    s: z.coerce.number().min(0).max(1440).nullable().default(null),
+    s: z.coerce.number().min(0).nullable().default(null),
     /** end time */
-    e: z.coerce.number().min(0).max(1440).nullable().default(null),
+    e: z.coerce.number().min(0).nullable().default(null),
     /** image url */
     i: z.string().nullable().default(null),
     /** notes */

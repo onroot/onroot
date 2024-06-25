@@ -72,10 +72,11 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
 })
 export class CardComponent implements OnInit {
     @Input({ required: true }) event!: ExtendedEvent;
+    @Input({ required: true }) globalLock!: boolean;
     @Output() updateEvent = new EventEmitter<ExtendedEvent>();
 
     parentElement = viewChild<ElementRef>('parent');
-    isLocked = false; //temp false
+    isLocked = true; //temp false
 
     ngOnInit(): void {
         console.log('created card!');
@@ -94,6 +95,7 @@ export class CardComponent implements OnInit {
     }
 
     onFocusIn(): void {
+        if (this.globalLock) return;
         this.isLocked = false;
     }
 

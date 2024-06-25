@@ -21,3 +21,15 @@ app-card:nth-child(3n + 3) ::ng-deep .stripe-color-bg {
 app-card:nth-child(3n + 3) ::ng-deep .stripe-color-ring {
   @apply ring-app-stripe-vanilla;
 }
+
+.cdk-drag-placeholder {
+  opacity: 0.25;
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 700ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}

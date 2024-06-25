@@ -14,6 +14,8 @@ import qs from 'qs';
     styleUrl: './create-page.component.css',
 })
 export class CreatePageComponent implements OnInit {
+    globalLock = false;
+
     constructor(
         private eventsService: EventsService,
         private route: ActivatedRoute,
@@ -21,22 +23,14 @@ export class CreatePageComponent implements OnInit {
         private mockEventData: MockEventDataService,
     ) {}
 
-    changeFirstTitle() {
-        this.eventsService.getEvents()()[0].title = 'changed!!';
-    }
-
-    getFirstTitle() {
-        return this.eventsService.getEvents()()[0].title;
-    }
-
-    changeFirstTime() {
-        this.eventsService.getEvents()()[0].startTime = 2389042;
-    }
-
     ngOnInit(): void {
         // this.consumeParamEvents();
         // add mock data for now
         this.mockEventData.asArr().map((e) => this.eventsService.addUrlExportableEvent(e));
+    }
+
+    toggleLock(): void {
+        this.globalLock = !this.globalLock;
     }
 
     // mock function to add events. page needs to be reloaded as well.
