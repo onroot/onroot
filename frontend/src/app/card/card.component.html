@@ -6,11 +6,11 @@
   (focusout)="onFocusOut($event)"
 >
   <div
-    class="peer flex w-4/6 cursor-default select-text flex-col overflow-hidden rounded-3xl text-left shadow-xl"
+    class="peer z-10 flex w-4/6 cursor-default select-text flex-col overflow-hidden rounded-3xl text-left shadow-xl"
     [@firstFocusClick]="isLocked ? 'unfocused' : 'focused'"
   >
-    <div class="h-4 w-full bg-teal-200"></div>
-    <div class="flex w-full flex-col gap-3 bg-blue-50 px-5 py-4">
+    <div class="custom-stripe-color h-4 w-full bg-teal-200"></div>
+    <div class="flex w-full flex-col gap-3 bg-app-card-color px-5 py-4">
       <textarea
         class="resize-none overflow-hidden text-wrap break-words bg-transparent text-2xl font-semibold"
         cdkTextareaAutosize
@@ -20,7 +20,10 @@
         [disabled]="isLocked"
       >
       </textarea>
-      <section class="flex items-start space-x-1.5">
+      <section
+        class="flex items-start space-x-1.5"
+        [ngClass]="event.placeName === null ? 'hidden' : 'block'"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -42,6 +45,7 @@
         </svg>
         <textarea
           class="inline-block flex-1 resize-none overflow-hidden bg-transparent text-lg font-medium"
+          placeholder="Location"
           cdkTextareaAutosize
           [ngModel]="event.placeName"
           (ngModelChange)="onChange(eventMemberType.placeName, $event)"
@@ -102,6 +106,8 @@
       />
       <textarea
         class="resize-none overflow-hidden bg-transparent text-lg font-medium"
+        [ngClass]="event.notes === null ? 'hidden' : 'inline-block'"
+        placeholder="Notes"
         cdkTextareaAutosize
         [ngModel]="event.notes"
         (ngModelChange)="onChange(eventMemberType.notes, $event)"
@@ -112,19 +118,84 @@
   </div>
   <div class="flex h-0 w-2/6 flex-col justify-start gap-3 pt-4">
     <app-card-edit-btn
-      class="relative -z-10"
-      text="Remove Location"
-      [@slideIn0delay]="isLocked ? 'hidden' : 'unhidden'"
-    />
-    <!-- <app-card-edit-btn
-      class="relative -z-10"
-      text="Remove Time"
-      [@slideIn50delay]="isLocked ? 'hidden' : 'unhidden'"
-    />
+      class="relative"
+      [text]="(event.placeName === null ? 'Add' : 'Remove') + ' Location'"
+      (click)="onLocationBtnClick()"
+      [@slideIn]="{
+        value: isLocked ? 'hidden' : 'unhidden',
+        params: { delay: '0ms' },
+      }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+        />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+        />
+      </svg>
+    </app-card-edit-btn>
     <app-card-edit-btn
-      class="relative -z-10"
+      class="relative"
+      [text]="
+        (event.startTime === null && event.endTime === null
+          ? 'Add'
+          : 'Remove') + ' Time'
+      "
+      (click)="onTimeBtnClick()"
+      [@slideIn]="{
+        value: isLocked ? 'hidden' : 'unhidden',
+        params: { delay: '50ms' },
+      }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+    </app-card-edit-btn>
+    <app-card-edit-btn
+      class="relative"
       text="Remove Image"
-      [@slideIn100delay]="isLocked ? 'hidden' : 'unhidden'"
-    /> -->
+      [@slideIn]="{
+        value: isLocked ? 'hidden' : 'unhidden',
+        params: { delay: '100ms' },
+      }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+        />
+      </svg>
+    </app-card-edit-btn>
   </div>
 </div>

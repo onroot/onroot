@@ -14,15 +14,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { DateTime } from 'luxon';
 import { NgClass } from '@angular/common';
 import { CardEditBtnComponent } from '../card-edit-btn/card-edit-btn.component';
-import {
-    AnimationTriggerMetadata,
-    animate,
-    keyframes,
-    state,
-    style,
-    transition,
-    trigger,
-} from '@angular/animations';
+import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
     selector: 'app-card',
@@ -51,9 +43,28 @@ import {
                 ),
             ]),
         ]),
-        slideIn('slideIn0delay', '0ms'),
-        slideIn('slideIn50delay', '50ms'),
-        slideIn('slideIn100delay', '100ms'),
+        trigger('slideIn', [
+            state(
+                'hidden',
+                style({
+                    visibility: 'hidden',
+                    transform: 'translateX(-15em)',
+                }),
+            ),
+            state(
+                'unhidden',
+                style({
+                    visibility: 'visible',
+                    transform: 'translateX(0)',
+                }),
+            ),
+            transition('hidden => unhidden', animate('0.3s {{ delay }} ease-in-out'), {
+                params: {
+                    delay: '0s',
+                },
+            }),
+            transition('unhidden => hidden', animate('0.3s ease-in-out')),
+        ]),
     ],
 })
 export class CardComponent implements OnInit {
@@ -61,7 +72,7 @@ export class CardComponent implements OnInit {
     @Output() updateEvent = new EventEmitter<Event>();
 
     parentElement = viewChild<ElementRef>('parent');
-    isLocked = true;
+    isLocked = false; //temp false
     eventMemberType = EventMember;
 
     ngOnInit(): void {
@@ -90,6 +101,17 @@ export class CardComponent implements OnInit {
         this.isLocked = true;
     }
 
+    onLocationBtnClick() {
+        const patch = this.event.placeName === null ? '' : null;
+        this.updateEvent.emit(Event.withPatch(this.event, patch, EventMember.placeName));
+    }
+
+    onTimeBtnClick() {
+        // TODO
+        // let newStartTime: number | null, newEndTime: number | null;
+        // if (this.event.startTime !== null)
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange(eventMemberType: EventMember, patch: any): void {
         this.updateEvent.emit(Event.withPatch(this.event, patch, eventMemberType));
@@ -109,25 +131,4 @@ export class CardComponent implements OnInit {
         }
         return;
     }
-}
-
-function slideIn(name: string, delay: string): AnimationTriggerMetadata {
-    return trigger(name, [
-        state(
-            'hidden',
-            style({
-                visibility: 'hidden',
-                transform: 'translateX(-15em)',
-            }),
-        ),
-        state(
-            'unhidden',
-            style({
-                visibility: 'visible',
-                transform: 'translateX(0)',
-            }),
-        ),
-        transition('hidden => unhidden', animate('0.4s ' + delay + ' ease-in-out')),
-        transition('unhidden => hidden', animate('0.4s ease-in-out')),
-    ]);
 }
