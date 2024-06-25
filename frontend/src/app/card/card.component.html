@@ -1,0 +1,201 @@
+<div
+  #parent
+  class="flex flex-row gap-4"
+  tabindex="-1"
+  (focus)="onFocusIn()"
+  (focusout)="onFocusOut($event)"
+>
+  <div
+    class="peer z-10 flex w-4/6 cursor-default select-text flex-col overflow-hidden rounded-3xl text-left shadow-xl"
+    [@firstFocusClick]="isLocked ? 'unfocused' : 'focused'"
+  >
+    <div class="custom-stripe-color h-4 w-full bg-teal-200"></div>
+    <div class="flex w-full flex-col gap-3 bg-app-card-color px-5 py-4">
+      <textarea
+        class="resize-none overflow-hidden text-wrap break-words bg-transparent text-2xl font-semibold"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="1"
+        [ngModel]="event.title"
+        (ngModelChange)="onChange(eventMemberType.title, $event)"
+        [disabled]="isLocked"
+      >
+      </textarea>
+      <section
+        class="flex items-start space-x-1.5"
+        [ngClass]="event.placeName === null ? 'hidden' : 'block'"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="inline-block size-7 min-w-fit"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+          />
+        </svg>
+        <textarea
+          class="inline-block flex-1 resize-none overflow-hidden bg-transparent text-lg font-medium"
+          placeholder="Location"
+          cdkTextareaAutosize
+          [ngModel]="event.placeName"
+          (ngModelChange)="onChange(eventMemberType.placeName, $event)"
+          [disabled]="isLocked"
+        >
+        </textarea>
+        <a
+          href="{{ event.placeRouteUrl }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-7 min-w-fit"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"
+            />
+          </svg>
+        </a>
+      </section>
+      <section class="flex justify-around font-medium">
+        <div class="border-b-2 border-b-gray-300">
+          <label for="start-time">From</label>
+          <ngx-timepicker-field
+            id="start-time"
+            class="inline-block"
+            [format]="12"
+            [controlOnly]="true"
+            [defaultTime]="getTime(event.startTime)"
+            (timeChanged)="onTimeChange(eventMemberType.startTime, $event)"
+            [disabled]="isLocked"
+          ></ngx-timepicker-field>
+        </div>
+        <div class="border-b-2 border-b-gray-300">
+          <label for="end-time">To</label>
+          <ngx-timepicker-field
+            id="start-time"
+            class="inline-block"
+            [format]="12"
+            [controlOnly]="true"
+            [defaultTime]="getTime(event.endTime)"
+            [disabled]="isLocked"
+          ></ngx-timepicker-field>
+        </div>
+      </section>
+      <img
+        src="{{ event.imgUrl }}"
+        class="w-full rounded object-cover"
+        draggable="false"
+        alt="Event Image"
+      />
+      <textarea
+        class="resize-none overflow-hidden bg-transparent text-lg font-medium"
+        [ngClass]="event.notes === null ? 'hidden' : 'inline-block'"
+        placeholder="Notes"
+        cdkTextareaAutosize
+        [ngModel]="event.notes"
+        (ngModelChange)="onChange(eventMemberType.notes, $event)"
+        [disabled]="isLocked"
+      >
+      </textarea>
+    </div>
+  </div>
+  <div class="flex h-0 w-2/6 flex-col justify-start gap-3 pt-4">
+    <app-card-edit-btn
+      class="relative"
+      [text]="(event.placeName === null ? 'Add' : 'Remove') + ' Location'"
+      (click)="onLocationBtnClick()"
+      [@slideIn]="{
+        value: isLocked ? 'hidden' : 'unhidden',
+        params: { delay: '0ms' },
+      }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+        />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+        />
+      </svg>
+    </app-card-edit-btn>
+    <app-card-edit-btn
+      class="relative"
+      [text]="
+        (event.startTime === null && event.endTime === null
+          ? 'Add'
+          : 'Remove') + ' Time'
+      "
+      (click)="onTimeBtnClick()"
+      [@slideIn]="{
+        value: isLocked ? 'hidden' : 'unhidden',
+        params: { delay: '50ms' },
+      }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+    </app-card-edit-btn>
+    <app-card-edit-btn
+      class="relative"
+      text="Remove Image"
+      [@slideIn]="{
+        value: isLocked ? 'hidden' : 'unhidden',
+        params: { delay: '100ms' },
+      }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+        />
+      </svg>
+    </app-card-edit-btn>
+  </div>
+</div>

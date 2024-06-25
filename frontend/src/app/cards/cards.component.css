@@ -1,0 +1,11 @@
+app-card:nth-child(3n + 1) ::ng-deep .custom-stripe-color {
+  @apply bg-app-stripe-teal;
+}
+
+app-card:nth-child(3n + 2) ::ng-deep .custom-stripe-color {
+  @apply bg-app-stripe-red;
+}
+
+app-card:nth-child(3n + 3) ::ng-deep .custom-stripe-color {
+  @apply bg-app-stripe-vanilla;
+}

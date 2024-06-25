@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExampleToImgComponent } from './example-to-img.component';
+import { CreatePageComponent } from './create-page.component';
 
-describe('ExampleToImgComponent', () => {
-    let component: ExampleToImgComponent;
-    let fixture: ComponentFixture<ExampleToImgComponent>;
+describe('CreatePageComponent', () => {
+    let component: CreatePageComponent;
+    let fixture: ComponentFixture<CreatePageComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ExampleToImgComponent],
+            imports: [CreatePageComponent],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(ExampleToImgComponent);
+        fixture = TestBed.createComponent(CreatePageComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
