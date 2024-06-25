@@ -2,11 +2,12 @@
   class="flex flex-row items-stretch overflow-hidden rounded-2xl shadow-xl"
 >
   <div
-    class="custom-stripe-color flex items-center justify-center bg-teal-200 px-3"
+    class="flex items-center justify-center px-3 transition-colors duration-500"
+    [ngClass]="addOrRemove === 'Add' ? 'stripe-color-bg' : 'bg-app-stripe-red'"
   >
     <ng-content></ng-content>
   </div>
-  <span class="flex items-center text-wrap bg-app-card-color p-4 font-medium">{{
-    text
-  }}</span>
+  <span class="flex items-center text-wrap bg-app-card-color p-4 font-medium"
+    >{{ addOrRemove }} {{ label }}</span
+  >
 </button>

@@ -7,7 +7,7 @@ import {
     Output,
     viewChild,
 } from '@angular/core';
-import { Event, EventMember } from '../shared/models/event';
+import { ExtendedEvent } from '../shared/models/event';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { FormsModule } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
@@ -49,6 +49,8 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
                 style({
                     visibility: 'hidden',
                     transform: 'translateX(-15em)',
+                    transformOrigin: '-15em -1em',
+                    scale: '0',
                 }),
             ),
             state(
@@ -56,36 +58,39 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
                 style({
                     visibility: 'visible',
                     transform: 'translateX(0)',
+                    scale: '1',
                 }),
             ),
-            transition('hidden => unhidden', animate('0.3s {{ delay }} ease-in-out'), {
+            transition('hidden => unhidden', animate('0.4s {{ delay }} ease-in-out'), {
                 params: {
                     delay: '0s',
                 },
             }),
-            transition('unhidden => hidden', animate('0.3s ease-in-out')),
+            transition('unhidden => hidden', animate('0.4s ease-in-out')),
         ]),
     ],
 })
 export class CardComponent implements OnInit {
-    @Input({ required: true }) event!: Event;
-    @Output() updateEvent = new EventEmitter<Event>();
+    @Input({ required: true }) event!: ExtendedEvent;
+    @Output() updateEvent = new EventEmitter<ExtendedEvent>();
 
     parentElement = viewChild<ElementRef>('parent');
     isLocked = false; //temp false
-    eventMemberType = EventMember;
 
     ngOnInit(): void {
         console.log('created card!');
     }
 
-    getTitle(): string {
-        return this.event.title;
-    }
-
     getTime(time: number | null): string {
         if (time === null) return '';
         return DateTime.fromSeconds(time).toLocaleString(DateTime.TIME_SIMPLE);
+    }
+
+    private explicitShowTime = false;
+    showTime(): boolean {
+        return (
+            this.event.startTime !== null || this.event.endTime !== null || this.explicitShowTime
+        );
     }
 
     onFocusIn(): void {
@@ -98,37 +103,71 @@ export class CardComponent implements OnInit {
             return;
         }
 
+        this.showImgUrlInput = false;
         this.isLocked = true;
     }
 
-    onLocationBtnClick() {
+    onLocationBtnClick(): void {
         const patch = this.event.placeName === null ? '' : null;
-        this.updateEvent.emit(Event.withPatch(this.event, patch, EventMember.placeName));
+        this.updateEvent.emit(
+            this.event.clone().update({ placeId: patch, placeName: patch, placeRouteUrl: patch }),
+        );
     }
 
-    onTimeBtnClick() {
-        // TODO
-        // let newStartTime: number | null, newEndTime: number | null;
-        // if (this.event.startTime !== null)
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onChange(eventMemberType: EventMember, patch: any): void {
-        this.updateEvent.emit(Event.withPatch(this.event, patch, eventMemberType));
-    }
-
-    onTimeChange(eventMemberType: EventMember, time: string) {
-        const unixIntegers = DateTime.fromFormat(time, 't').toUnixInteger();
-        console.log(unixIntegers);
-
-        switch (eventMemberType) {
-            case EventMember.startTime:
-            case EventMember.endTime:
-                this.updateEvent.emit(Event.withPatch(this.event, unixIntegers, eventMemberType));
-                break;
-            default:
-                break;
+    onTimeBtnClick(): void {
+        // Hide and clear times
+        if (this.event.startTime !== null || this.event.endTime !== null) {
+            this.updateEvent.emit(this.event.clone().update({ startTime: null, endTime: null }));
+            this.explicitShowTime = false;
+            // Show times
+        } else {
+            this.explicitShowTime = !this.explicitShowTime;
         }
-        return;
+    }
+
+    onImgBtnClick(): void {
+        if (this.event.imgUrl !== null) {
+            this.updateEvent.emit(this.event.clone().update({ imgUrl: null }));
+        } else {
+            this.showImgUrlInput = !this.showImgUrlInput;
+        }
+    }
+
+    showImgUrlInput = false;
+    onImageUrlSubmit(event: Event): void {
+        const inputElement = event.target as HTMLInputElement | null;
+        if (inputElement === null) return;
+
+        const imgUrl = inputElement.value;
+        this.updateEvent.emit(this.event.clone().update({ imgUrl }));
+
+        this.showImgUrlInput = false;
+        inputElement.value = '';
+    }
+
+    onNotesBtnClick(): void {
+        const notes = this.event.notes === null ? '' : null;
+        this.updateEvent.emit(this.event.clone().update({ notes }));
+    }
+
+    onTimeChange({
+        startTime = this.event.startTime,
+        endTime = this.event.endTime,
+    }: {
+        startTime?: string | number | null;
+        endTime?: string | number | null;
+    }) {
+        if (typeof startTime === 'string') {
+            startTime = DateTime.fromFormat(startTime, 't').toUnixInteger();
+        }
+        if (typeof endTime === 'string') {
+            endTime = DateTime.fromFormat(endTime, 't').toUnixInteger();
+        }
+
+        this.updateEvent.emit(this.event.clone().update({ startTime, endTime }));
+    }
+
+    onInvisibleSpaceFocus(): void {
+        this.isLocked = true;
     }
 }

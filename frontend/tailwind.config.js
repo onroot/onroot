@@ -11,6 +11,7 @@ module.exports = {
         "app-card-color": "#eff6ff",
         "app-stripe-teal": colors.teal[200],
         "app-stripe-vanilla": "#F5DE98",
+        "app-stripe-purple": "#B598F5",
         "app-stripe-red": "#F598B1",
       },
       fontFamily: {

@@ -34,3 +34,6 @@
   background: transparent !important;
 }
 
+app-card-edit-btn[style*="visibility: hidden"] {
+  display: none;
+}

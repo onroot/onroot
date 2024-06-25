@@ -1,22 +1,24 @@
 <div
   #parent
   class="flex flex-row gap-4"
-  tabindex="-1"
+  tabindex="0"
   (focus)="onFocusIn()"
   (focusout)="onFocusOut($event)"
 >
   <div
-    class="peer z-10 flex w-4/6 cursor-default select-text flex-col overflow-hidden rounded-3xl text-left shadow-xl"
+    class="peer z-10 flex h-fit w-4/6 select-text flex-col overflow-hidden rounded-3xl text-left shadow-xl"
     [@firstFocusClick]="isLocked ? 'unfocused' : 'focused'"
   >
-    <div class="custom-stripe-color h-4 w-full bg-teal-200"></div>
+    <div class="stripe-color-bg h-4 w-full bg-teal-200"></div>
     <div class="flex w-full flex-col gap-3 bg-app-card-color px-5 py-4">
       <textarea
         class="resize-none overflow-hidden text-wrap break-words bg-transparent text-2xl font-semibold"
         cdkTextareaAutosize
         cdkAutosizeMinRows="1"
         [ngModel]="event.title"
-        (ngModelChange)="onChange(eventMemberType.title, $event)"
+        (ngModelChange)="
+          updateEvent.emit(event.clone().update({ title: $event }))
+        "
         [disabled]="isLocked"
       >
       </textarea>
@@ -48,7 +50,9 @@
           placeholder="Location"
           cdkTextareaAutosize
           [ngModel]="event.placeName"
-          (ngModelChange)="onChange(eventMemberType.placeName, $event)"
+          (ngModelChange)="
+            updateEvent.emit(event.clone().update({ placeName: $event }))
+          "
           [disabled]="isLocked"
         >
         </textarea>
@@ -73,7 +77,10 @@
           </svg>
         </a>
       </section>
-      <section class="flex justify-around font-medium">
+      <section
+        class="flex justify-around font-medium"
+        [ngClass]="showTime() ? 'block' : 'hidden'"
+      >
         <div class="border-b-2 border-b-gray-300">
           <label for="start-time">From</label>
           <ngx-timepicker-field
@@ -82,7 +89,7 @@
             [format]="12"
             [controlOnly]="true"
             [defaultTime]="getTime(event.startTime)"
-            (timeChanged)="onTimeChange(eventMemberType.startTime, $event)"
+            (timeChanged)="onTimeChange({ startTime: $event })"
             [disabled]="isLocked"
           ></ngx-timepicker-field>
         </div>
@@ -94,12 +101,14 @@
             [format]="12"
             [controlOnly]="true"
             [defaultTime]="getTime(event.endTime)"
+            (timeChanged)="onTimeChange({ endTime: $event })"
             [disabled]="isLocked"
           ></ngx-timepicker-field>
         </div>
       </section>
       <img
-        src="{{ event.imgUrl }}"
+        [ngClass]="event.imgUrl !== null ? 'block' : 'hidden'"
+        [src]="event.imgUrl"
         class="w-full rounded object-cover"
         draggable="false"
         alt="Event Image"
@@ -110,16 +119,23 @@
         placeholder="Notes"
         cdkTextareaAutosize
         [ngModel]="event.notes"
-        (ngModelChange)="onChange(eventMemberType.notes, $event)"
+        (ngModelChange)="
+          updateEvent.emit(event.clone().update({ notes: $event }))
+        "
         [disabled]="isLocked"
       >
       </textarea>
     </div>
   </div>
-  <div class="flex h-0 w-2/6 flex-col justify-start gap-3 pt-4">
+  <div
+    class="flex w-2/6 flex-col justify-start gap-3 pt-4"
+    tabindex="-1"
+    (focus)="onInvisibleSpaceFocus()"
+  >
     <app-card-edit-btn
       class="relative"
-      [text]="(event.placeName === null ? 'Add' : 'Remove') + ' Location'"
+      label="Location"
+      [addOrRemove]="event.placeName === null ? 'Add' : 'Remove'"
       (click)="onLocationBtnClick()"
       [@slideIn]="{
         value: isLocked ? 'hidden' : 'unhidden',
@@ -147,12 +163,9 @@
       </svg>
     </app-card-edit-btn>
     <app-card-edit-btn
-      class="relative"
-      [text]="
-        (event.startTime === null && event.endTime === null
-          ? 'Add'
-          : 'Remove') + ' Time'
-      "
+      class="relative [&.invisible]:hidden"
+      [addOrRemove]="showTime() ? 'Remove' : 'Add'"
+      label="Time"
       (click)="onTimeBtnClick()"
       [@slideIn]="{
         value: isLocked ? 'hidden' : 'unhidden',
@@ -175,8 +188,10 @@
       </svg>
     </app-card-edit-btn>
     <app-card-edit-btn
-      class="relative"
-      text="Remove Image"
+      class="relative [&.invisible]:hidden"
+      label="Image"
+      [addOrRemove]="event.imgUrl === null ? 'Add' : 'Remove'"
+      (click)="onImgBtnClick()"
       [@slideIn]="{
         value: isLocked ? 'hidden' : 'unhidden',
         params: { delay: '100ms' },
@@ -194,6 +209,39 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+        />
+      </svg>
+    </app-card-edit-btn>
+    <input
+      class="stripe-color-ring rounded-2xl p-3 ring-2 focus:outline-none"
+      type="text"
+      placeholder="Image URL"
+      (keydown.enter)="onImageUrlSubmit($event)"
+      (blur)="onImageUrlSubmit($event)"
+      [ngClass]="showImgUrlInput ? 'block' : 'hidden'"
+    />
+    <app-card-edit-btn
+      class="relative [&.invisible]:hidden"
+      label="Notes"
+      [addOrRemove]="event.notes === null ? 'Add' : 'Remove'"
+      (click)="onNotesBtnClick()"
+      [@slideIn]="{
+        value: isLocked ? 'hidden' : 'unhidden',
+        params: { delay: '150ms' },
+      }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
         />
       </svg>
     </app-card-edit-btn>

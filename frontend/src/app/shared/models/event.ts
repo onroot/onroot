@@ -20,15 +20,39 @@ export const UrlExportableEventSchema = z.object({
 export type UrlExportableEvent = z.infer<typeof UrlExportableEventSchema>;
 
 export class SimpleEvent {
-    constructor(
-        public title: string,
-        public placeId: string | null,
-        public placeName: string | null,
-        public startTime: number | null,
-        public endTime: number | null,
-        public imgUrl: string | null,
-        public notes: string | null,
-    ) {}
+    public title: string;
+    public placeId: string | null;
+    public placeName: string | null;
+    public startTime: number | null;
+    public endTime: number | null;
+    public imgUrl: string | null;
+    public notes: string | null;
+
+    constructor({
+        title = 'Untitled',
+        placeId = null,
+        placeName = null,
+        startTime = null,
+        endTime = null,
+        imgUrl = null,
+        notes = null,
+    }: {
+        title: string;
+        placeId?: string | null;
+        placeName?: string | null;
+        startTime?: number | null;
+        endTime?: number | null;
+        imgUrl?: string | null;
+        notes?: string | null;
+    }) {
+        this.title = title;
+        this.placeId = placeId;
+        this.placeName = placeName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.imgUrl = imgUrl;
+        this.notes = notes;
+    }
 
     toUrlExportableEvent(): UrlExportableEvent {
         return {
@@ -43,173 +67,110 @@ export class SimpleEvent {
     }
 
     static fromUrlExportableEvent(e: UrlExportableEvent): SimpleEvent {
-        return new SimpleEvent(e.t, e.l, e.p, e.s, e.e, e.i, e.n);
+        return new SimpleEvent({
+            title: e.t,
+            placeId: e.l,
+            placeName: e.p,
+            startTime: e.s,
+            endTime: e.e,
+            imgUrl: e.i,
+            notes: e.n,
+        });
     }
 }
 
-export class Event extends SimpleEvent {
-    constructor(
-        event: SimpleEvent,
-        public id: number,
-        public placeRouteUrl: string | null,
-    ) {
-        super(
-            event.title,
-            event.placeId,
-            event.placeName,
-            event.startTime,
-            event.endTime,
-            event.imgUrl,
-            event.notes,
-        );
+export class ExtendedEvent extends SimpleEvent {
+    public id: number;
+    public placeRouteUrl: string | null;
+
+    constructor({
+        title = 'Untitled',
+        placeId = null,
+        placeName = null,
+        startTime = null,
+        endTime = null,
+        imgUrl = null,
+        notes = null,
+        id,
+        placeRouteUrl = null,
+    }: {
+        title: string;
+        placeId?: string | null;
+        placeName?: string | null;
+        startTime?: number | null;
+        endTime?: number | null;
+        imgUrl?: string | null;
+        notes?: string | null;
+        id: number;
+        placeRouteUrl?: string | null;
+    }) {
+        super({ title, placeId, placeName, startTime, endTime, imgUrl, notes });
+        this.id = id;
+        this.placeRouteUrl = placeRouteUrl;
     }
 
-    static fromRaw(
-        title: string,
-        placeId: string | null,
-        placeName: string | null,
-        startTime: number | null,
-        endTime: number | null,
-        imgUrl: string | null,
-        notes: string | null,
-        id: number,
-        placeRouteUrl: string | null,
-    ): Event {
-        const simpleEvent = new SimpleEvent(
-            title,
-            placeId,
-            placeName,
-            startTime,
-            endTime,
-            imgUrl,
-            notes,
-        );
-        return new Event(simpleEvent, id, placeRouteUrl);
+    static fromSimpleEvent(
+        simpleEvent: SimpleEvent,
+        { id, placeRouteUrl = null }: { id: number; placeRouteUrl?: string | null },
+    ): ExtendedEvent {
+        return new ExtendedEvent({
+            title: simpleEvent.title,
+            placeId: simpleEvent.placeId,
+            placeName: simpleEvent.placeName,
+            startTime: simpleEvent.startTime,
+            endTime: simpleEvent.endTime,
+            imgUrl: simpleEvent.imgUrl,
+            notes: simpleEvent.notes,
+            id,
+            placeRouteUrl,
+        });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    static withPatch(event: Event, patch: any, member: EventMember): Event {
-        switch (member) {
-            case EventMember.title:
-                return this.fromRaw(
-                    patch,
-                    event.placeId,
-                    event.placeName,
-                    event.startTime,
-                    event.endTime,
-                    event.imgUrl,
-                    event.notes,
-                    event.id,
-                    event.placeRouteUrl,
-                );
-            case EventMember.placeId:
-                return this.fromRaw(
-                    event.title,
-                    patch,
-                    event.placeName,
-                    event.startTime,
-                    event.endTime,
-                    event.imgUrl,
-                    event.notes,
-                    event.id,
-                    event.placeRouteUrl,
-                );
-            case EventMember.placeName:
-                return this.fromRaw(
-                    event.title,
-                    event.placeId,
-                    patch,
-                    event.startTime,
-                    event.endTime,
-                    event.imgUrl,
-                    event.notes,
-                    event.id,
-                    event.placeRouteUrl,
-                );
-            case EventMember.startTime:
-                return this.fromRaw(
-                    event.title,
-                    event.placeId,
-                    event.placeName,
-                    patch,
-                    event.endTime,
-                    event.imgUrl,
-                    event.notes,
-                    event.id,
-                    event.placeRouteUrl,
-                );
-            case EventMember.endTime:
-                return this.fromRaw(
-                    event.title,
-                    event.placeId,
-                    event.placeName,
-                    event.startTime,
-                    patch,
-                    event.imgUrl,
-                    event.notes,
-                    event.id,
-                    event.placeRouteUrl,
-                );
-            case EventMember.imgUrl:
-                return this.fromRaw(
-                    event.title,
-                    event.placeId,
-                    event.placeName,
-                    event.startTime,
-                    event.endTime,
-                    patch,
-                    event.notes,
-                    event.id,
-                    event.placeRouteUrl,
-                );
-            case EventMember.notes:
-                return this.fromRaw(
-                    event.title,
-                    event.placeId,
-                    event.placeName,
-                    event.startTime,
-                    event.endTime,
-                    event.imgUrl,
-                    patch,
-                    event.id,
-                    event.placeRouteUrl,
-                );
-            case EventMember.id:
-                return this.fromRaw(
-                    event.title,
-                    event.placeId,
-                    event.placeName,
-                    event.startTime,
-                    event.endTime,
-                    event.imgUrl,
-                    event.notes,
-                    patch,
-                    event.placeRouteUrl,
-                );
-            case EventMember.placeRouteUrl:
-                return this.fromRaw(
-                    event.title,
-                    event.placeId,
-                    event.placeName,
-                    event.startTime,
-                    event.endTime,
-                    event.imgUrl,
-                    event.notes,
-                    event.id,
-                    patch,
-                );
-        }
+    clone(): ExtendedEvent {
+        return new ExtendedEvent({
+            title: this.title,
+            placeId: this.placeId,
+            placeName: this.placeName,
+            startTime: this.startTime,
+            endTime: this.endTime,
+            imgUrl: this.imgUrl,
+            notes: this.notes,
+            id: this.id,
+            placeRouteUrl: this.placeRouteUrl,
+        });
     }
-}
 
-export enum EventMember {
-    title,
-    placeId,
-    placeName,
-    startTime,
-    endTime,
-    imgUrl,
-    notes,
-    id,
-    placeRouteUrl,
+    update({
+        title,
+        placeId,
+        placeName,
+        startTime,
+        endTime,
+        imgUrl,
+        notes,
+        id,
+        placeRouteUrl,
+    }: {
+        title?: string;
+        placeId?: string | null;
+        placeName?: string | null;
+        startTime?: number | null;
+        endTime?: number | null;
+        imgUrl?: string | null;
+        notes?: string | null;
+        id?: number;
+        placeRouteUrl?: string | null;
+    }): ExtendedEvent {
+        this.title = title !== undefined ? title : this.title;
+        this.placeId = placeId !== undefined ? placeId : this.placeId;
+        this.placeName = placeName !== undefined ? placeName : this.placeName;
+        this.startTime = startTime !== undefined ? startTime : this.startTime;
+        this.endTime = endTime !== undefined ? endTime : this.endTime;
+        this.imgUrl = imgUrl !== undefined ? imgUrl : this.imgUrl;
+        this.notes = notes !== undefined ? notes : this.notes;
+        this.id = id !== undefined ? id : this.id;
+        this.placeRouteUrl = placeRouteUrl !== undefined ? placeRouteUrl : this.placeRouteUrl;
+
+        return this;
+    }
 }
