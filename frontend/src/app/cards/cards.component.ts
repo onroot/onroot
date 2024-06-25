@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CardComponent } from '../card/card.component';
 import { EventsService } from '../events.service';
-import { Event } from '../shared/models/event';
+import { ExtendedEvent } from '../shared/models/event';
 
 @Component({
     selector: 'app-cards',
@@ -15,7 +15,7 @@ export class CardsComponent {
 
     constructor(private eventsService: EventsService) {}
 
-    updateEvent(index: number, event: Event): void {
+    updateEvent(index: number, event: ExtendedEvent): void {
         this.eventsService.setEvent(index, event);
     }
 }

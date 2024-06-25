@@ -1,22 +1,25 @@
 import { Injectable, Signal, computed, signal } from '@angular/core';
-import { Event, SimpleEvent, UrlExportableEvent } from './shared/models/event';
+import { ExtendedEvent, SimpleEvent, UrlExportableEvent } from './shared/models/event';
 
 @Injectable({
     providedIn: 'root',
 })
 export class EventsService {
     private newId = 0;
-    private eventsSig = signal<Event[]>([]);
+    private eventsSig = signal<ExtendedEvent[]>([]);
 
-    getEvents(): Signal<Event[]> {
+    getEvents(): Signal<ExtendedEvent[]> {
         return computed(this.eventsSig);
     }
 
-    setEvents(events: Event[]): void {
+    setEvents(events: ExtendedEvent[]): void {
         this.eventsSig.set(events);
     }
 
-    setEvent(index: number, event: Event): void {
+    setEvent(index: number, event: ExtendedEvent): void {
+        console.log('new event');
+        console.log(event);
+
         this.eventsSig.update((events) => [
             ...events.slice(0, index),
             event,
@@ -25,8 +28,8 @@ export class EventsService {
     }
 
     addSimpleEvent(simpleEvent: SimpleEvent): void {
-        const event = new Event(simpleEvent, ++this.newId, 'https://www.example.com');
-        this.eventsSig.update((prevEvents) => [...prevEvents, event]);
+        const extendedEvent = ExtendedEvent.fromSimpleEvent(simpleEvent, { id: ++this.newId });
+        this.eventsSig.update((prevEvents) => [...prevEvents, extendedEvent]);
     }
 
     addUrlExportableEvent(urlExportableEvent: UrlExportableEvent): void {

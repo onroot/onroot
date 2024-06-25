@@ -1,11 +1,23 @@
-app-card:nth-child(3n + 1) ::ng-deep .custom-stripe-color {
+app-card:nth-child(3n + 1) ::ng-deep .stripe-color-bg {
   @apply bg-app-stripe-teal;
 }
 
-app-card:nth-child(3n + 2) ::ng-deep .custom-stripe-color {
-  @apply bg-app-stripe-red;
+app-card:nth-child(3n + 1) ::ng-deep .stripe-color-ring {
+  @apply ring-app-stripe-teal;
 }
 
-app-card:nth-child(3n + 3) ::ng-deep .custom-stripe-color {
+app-card:nth-child(3n + 2) ::ng-deep .stripe-color-bg {
+  @apply bg-app-stripe-purple;
+}
+
+app-card:nth-child(3n + 2) ::ng-deep .stripe-color-ring {
+  @apply ring-app-stripe-purple;
+}
+
+app-card:nth-child(3n + 3) ::ng-deep .stripe-color-bg {
   @apply bg-app-stripe-vanilla;
+}
+
+app-card:nth-child(3n + 3) ::ng-deep .stripe-color-ring {
+  @apply ring-app-stripe-vanilla;
 }
