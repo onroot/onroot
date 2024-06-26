@@ -5,6 +5,8 @@ import { MockEventDataService } from '../mock-event-data.service';
 import { UrlExportableEvent, UrlExportableEventSchema } from '../shared/models/event';
 import { EventsService } from '../events.service';
 import qs from 'qs';
+import { MapsService } from '../maps.service';
+import { DateTime } from 'luxon';
 
 @Component({
     selector: 'app-create-page',
@@ -19,6 +21,7 @@ export class CreatePageComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private mockEventData: MockEventDataService,
+        private mapService: MapsService
     ) {}
 
     changeFirstTitle() {
@@ -35,6 +38,8 @@ export class CreatePageComponent implements OnInit {
 
     ngOnInit(): void {
         // this.consumeParamEvents();
+        this.mapService.fetchPlaceResults("niagra").then(()=>{});
+        this.mapService.fetchEstimatedTravel("ChIJW6AIkVXemwARTtIvZ2xC3FA", "ChIJ9dtpbgeoXZQRyTYZv0Z666w", DateTime.fromSeconds(1719016200).toJSDate() ).then(()=>{});
         // add mock data for now
         this.mockEventData.asArr().map((e) => this.eventsService.addUrlExportableEvent(e));
     }
