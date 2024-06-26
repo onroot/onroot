@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CardsComponent } from '../cards/cards.component';
+import { CardsListComponent } from '../cards-list/cards-list.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MockEventDataService } from '../mock-event-data.service';
 import { UrlExportableEvent, UrlExportableEventSchema } from '../shared/models/event';
@@ -9,7 +9,7 @@ import qs from 'qs';
 @Component({
     selector: 'app-create-page',
     standalone: true,
-    imports: [CardsComponent, RouterLink],
+    imports: [CardsListComponent, RouterLink],
     templateUrl: './create-page.component.html',
     styleUrl: './create-page.component.css',
 })

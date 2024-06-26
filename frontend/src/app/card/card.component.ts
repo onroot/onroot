@@ -1,12 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    viewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, viewChild } from '@angular/core';
 import { ExtendedEvent } from '../shared/models/event';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +7,7 @@ import { DateTime } from 'luxon';
 import { NgClass } from '@angular/common';
 import { CardEditBtnComponent } from '../card-edit-btn/card-edit-btn.component';
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import { TimeStrPipe } from '../time-str.pipe';
 
 @Component({
     selector: 'app-card',
@@ -25,6 +18,7 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
         CdkTextareaAutosize,
         NgClass,
         CardEditBtnComponent,
+        TimeStrPipe,
     ],
     templateUrl: './card.component.html',
     styleUrl: './card.component.css',
@@ -70,22 +64,13 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
         ]),
     ],
 })
-export class CardComponent implements OnInit {
+export class CardComponent {
     @Input({ required: true }) event!: ExtendedEvent;
     @Input({ required: true }) globalLock!: boolean;
     @Output() updateEvent = new EventEmitter<ExtendedEvent>();
 
     parentElement = viewChild<ElementRef>('parent');
-    isLocked = true; //temp false
-
-    ngOnInit(): void {
-        console.log('created card!');
-    }
-
-    getTime(time: number | null): string {
-        if (time === null) return '';
-        return DateTime.fromSeconds(time).toLocaleString(DateTime.TIME_SIMPLE);
-    }
+    isLocked = false; //temp false
 
     private explicitShowTime = false;
     showTime(): boolean {
@@ -99,8 +84,8 @@ export class CardComponent implements OnInit {
         this.isLocked = false;
     }
 
-    onFocusOut(event: FocusEvent): void {
-        const relatedTarget = event.relatedTarget as HTMLElement | null;
+    onFocusOut(event: FocusEvent | null): void {
+        const relatedTarget = event?.relatedTarget as HTMLElement | null;
         if (relatedTarget && this.parentElement()?.nativeElement.contains(relatedTarget)) {
             return;
         }
@@ -170,6 +155,6 @@ export class CardComponent implements OnInit {
     }
 
     onInvisibleSpaceFocus(): void {
-        this.isLocked = true;
+        this.onFocusOut(null);
     }
 }

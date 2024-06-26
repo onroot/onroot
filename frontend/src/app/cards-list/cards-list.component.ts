@@ -1,21 +1,29 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Signal } from '@angular/core';
 import { CardComponent } from '../card/card.component';
 import { EventsService } from '../events.service';
 import { ExtendedEvent } from '../shared/models/event';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { CommuteWidgetComponent } from '../commute-widget/commute-widget.component';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-cards',
+    selector: 'app-cards-list',
     standalone: true,
-    imports: [CardComponent, DragDropModule],
-    templateUrl: './cards.component.html',
-    styleUrl: './cards.component.css',
+    imports: [CardComponent, DragDropModule, CommuteWidgetComponent, UpperCasePipe],
+    templateUrl: './cards-list.component.html',
+    styleUrl: './cards-list.component.css',
 })
-export class CardsComponent {
+export class CardsListComponent {
     @Input({ required: true }) globalLock!: boolean;
     eventsSig = this.eventsService.getEvents();
 
     constructor(private eventsService: EventsService) {}
+
+    getEvent(index: number): Signal<ExtendedEvent> {
+        console.log('get event');
+
+        return this.eventsService.getEvent(index);
+    }
 
     updateEvent(index: number, event: ExtendedEvent): void {
         this.eventsService.setEvent(index, event);

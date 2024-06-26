@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import qs from 'qs';
-import { UrlExportableEvent } from './shared/models/event';
+import { SimpleEvent, UrlExportableEvent } from './shared/models/event';
 
 @Injectable({
     providedIn: 'root',
@@ -35,6 +35,11 @@ export class MockEventDataService {
                 i: null,
                 n: null,
             },
+            new SimpleEvent({ title: 'a', placeId: 'a' }).toUrlExportableEvent(),
+            new SimpleEvent({ title: 'b', placeId: 'b' }).toUrlExportableEvent(),
+            new SimpleEvent({ title: 'c', placeId: 'c' }).toUrlExportableEvent(),
+            new SimpleEvent({ title: 'd', placeId: 'd' }).toUrlExportableEvent(),
+            new SimpleEvent({ title: 'e', placeId: 'e' }).toUrlExportableEvent(),
         ],
     };
 

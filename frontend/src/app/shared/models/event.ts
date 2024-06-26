@@ -37,7 +37,7 @@ export class SimpleEvent {
         imgUrl = null,
         notes = null,
     }: {
-        title: string;
+        title?: string;
         placeId?: string | null;
         placeName?: string | null;
         startTime?: number | null;
@@ -84,17 +84,17 @@ export class ExtendedEvent extends SimpleEvent {
     public placeRouteUrl: string | null;
 
     constructor({
-        title = 'Untitled',
-        placeId = null,
-        placeName = null,
-        startTime = null,
-        endTime = null,
-        imgUrl = null,
-        notes = null,
+        title,
+        placeId,
+        placeName,
+        startTime,
+        endTime,
+        imgUrl,
+        notes,
         id,
         placeRouteUrl = null,
     }: {
-        title: string;
+        title?: string;
         placeId?: string | null;
         placeName?: string | null;
         startTime?: number | null;
@@ -111,7 +111,7 @@ export class ExtendedEvent extends SimpleEvent {
 
     static fromSimpleEvent(
         simpleEvent: SimpleEvent,
-        { id, placeRouteUrl = null }: { id: number; placeRouteUrl?: string | null },
+        { id, placeRouteUrl }: { id: number; placeRouteUrl?: string | null },
     ): ExtendedEvent {
         return new ExtendedEvent({
             title: simpleEvent.title,

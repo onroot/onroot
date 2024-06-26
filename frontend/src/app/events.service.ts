@@ -12,6 +12,10 @@ export class EventsService {
         return computed(this.eventsSig);
     }
 
+    getEvent(index: number): Signal<ExtendedEvent> {
+        return computed(() => this.eventsSig()[index]);
+    }
+
     setEvents(events: ExtendedEvent[]): void {
         this.eventsSig.set(events);
     }

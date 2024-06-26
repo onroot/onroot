@@ -1,18 +1,20 @@
 <div
   #parent
-  class="flex flex-row gap-4"
+  class="relative flex flex-row gap-4"
   tabindex="0"
   (focus)="onFocusIn()"
   (focusout)="onFocusOut($event)"
 >
+  placeId: {{ event.placeId }}
   <div
-    class="peer z-10 flex h-fit w-4/6 select-text flex-col overflow-hidden rounded-3xl text-left shadow-xl"
+    class="z-10 flex w-full flex-col overflow-hidden rounded-3xl text-left shadow-xl"
     [@firstFocusClick]="isLocked ? 'unfocused' : 'focused'"
   >
     <div class="stripe-color-bg h-4 w-full bg-teal-200"></div>
     <div class="flex w-full flex-col gap-3 bg-app-card-color px-5 py-4">
       <textarea
         class="resize-none overflow-hidden text-wrap break-words bg-transparent text-2xl font-semibold"
+        name="Event Title"
         cdkTextareaAutosize
         cdkAutosizeMinRows="1"
         [ngModel]="event.title"
@@ -22,113 +24,113 @@
         [disabled]="isLocked"
       >
       </textarea>
-      <section
-        class="flex items-start space-x-1.5"
-        [ngClass]="event.placeName === null ? 'hidden' : 'block'"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="inline-block size-7 min-w-fit"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-          />
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-          />
-        </svg>
-        <textarea
-          class="inline-block flex-1 resize-none overflow-hidden bg-transparent text-lg font-medium"
-          placeholder="Location"
-          cdkTextareaAutosize
-          [ngModel]="event.placeName"
-          (ngModelChange)="
-            updateEvent.emit(event.clone().update({ placeName: $event }))
-          "
-          [disabled]="isLocked"
-        >
-        </textarea>
-        <a
-          href="{{ event.placeRouteUrl }}"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      @if (event.placeName !== null) {
+        <section class="flex items-start space-x-1.5">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="size-7 min-w-fit"
+            class="inline-block size-7 min-w-fit"
           >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"
+              d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
             />
           </svg>
-        </a>
-      </section>
-      <section
-        class="flex justify-around font-medium"
-        [ngClass]="showTime() ? 'block' : 'hidden'"
-      >
-        <div class="border-b-2 border-b-gray-300">
-          <label for="start-time">From</label>
-          <ngx-timepicker-field
-            id="start-time"
-            class="inline-block"
-            [format]="12"
-            [controlOnly]="true"
-            [defaultTime]="getTime(event.startTime)"
-            (timeChanged)="onTimeChange({ startTime: $event })"
+          <textarea
+            class="inline-block flex-1 resize-none overflow-hidden bg-transparent text-lg font-medium"
+            name="Event Place Name"
+            placeholder="Location"
+            cdkTextareaAutosize
+            [ngModel]="event.placeName"
+            (ngModelChange)="
+              updateEvent.emit(event.clone().update({ placeName: $event }))
+            "
             [disabled]="isLocked"
-          ></ngx-timepicker-field>
-        </div>
-        <div class="border-b-2 border-b-gray-300">
-          <label for="end-time">To</label>
-          <ngx-timepicker-field
-            id="start-time"
-            class="inline-block"
-            [format]="12"
-            [controlOnly]="true"
-            [defaultTime]="getTime(event.endTime)"
-            (timeChanged)="onTimeChange({ endTime: $event })"
-            [disabled]="isLocked"
-          ></ngx-timepicker-field>
-        </div>
-      </section>
-      <img
-        [ngClass]="event.imgUrl !== null ? 'block' : 'hidden'"
-        [src]="event.imgUrl"
-        class="w-full rounded object-cover"
-        draggable="false"
-        alt="Event Image"
-      />
-      <textarea
-        class="resize-none overflow-hidden bg-transparent text-lg font-medium"
-        [ngClass]="event.notes === null ? 'hidden' : 'inline-block'"
-        placeholder="Notes"
-        cdkTextareaAutosize
-        [ngModel]="event.notes"
-        (ngModelChange)="
-          updateEvent.emit(event.clone().update({ notes: $event }))
-        "
-        [disabled]="isLocked"
-      >
-      </textarea>
+          >
+          </textarea>
+          <a
+            href="{{ event.placeRouteUrl }}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-7 min-w-fit"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"
+              />
+            </svg>
+          </a>
+        </section>
+      }
+      @if (showTime()) {
+        <section class="flex justify-around font-medium">
+          <div class="border-b-2 border-b-gray-300">
+            <span>From</span>
+            <ngx-timepicker-field
+              class="inline-block"
+              [format]="12"
+              [controlOnly]="true"
+              [defaultTime]="event.startTime | timeStr"
+              (timeChanged)="onTimeChange({ startTime: $event })"
+              [disabled]="isLocked"
+            ></ngx-timepicker-field>
+          </div>
+          <div class="border-b-2 border-b-gray-300">
+            <span>To</span>
+            <ngx-timepicker-field
+              class="inline-block"
+              [format]="12"
+              [controlOnly]="true"
+              [defaultTime]="event.endTime | timeStr"
+              (timeChanged)="onTimeChange({ endTime: $event })"
+              [disabled]="isLocked"
+            ></ngx-timepicker-field>
+          </div>
+        </section>
+      }
+      @if (event.imgUrl !== null) {
+        <img
+          [src]="event.imgUrl"
+          class="w-full rounded object-cover"
+          draggable="false"
+          alt="Event Image"
+        />
+      }
+      @if (event.notes !== null) {
+        <textarea
+          class="resize-none overflow-hidden bg-transparent text-lg font-medium"
+          name="Event Notes"
+          placeholder="Notes"
+          cdkTextareaAutosize
+          [ngModel]="event.notes"
+          (ngModelChange)="
+            updateEvent.emit(event.clone().update({ notes: $event }))
+          "
+          [disabled]="isLocked"
+        >
+        </textarea>
+      }
     </div>
   </div>
   <div
-    class="flex w-2/6 flex-col justify-start gap-3 pt-4"
+    class="absolute -right-16 flex w-fit flex-col justify-start gap-3 pt-4 lg:-right-56"
     tabindex="-1"
     (focus)="onInvisibleSpaceFocus()"
   >
@@ -163,7 +165,7 @@
       </svg>
     </app-card-edit-btn>
     <app-card-edit-btn
-      class="relative [&.invisible]:hidden"
+      class="relative w-fit [&.invisible]:hidden"
       [addOrRemove]="showTime() ? 'Remove' : 'Add'"
       label="Time"
       (click)="onTimeBtnClick()"
@@ -188,7 +190,7 @@
       </svg>
     </app-card-edit-btn>
     <app-card-edit-btn
-      class="relative [&.invisible]:hidden"
+      class="relative w-fit [&.invisible]:hidden"
       label="Image"
       [addOrRemove]="event.imgUrl === null ? 'Add' : 'Remove'"
       (click)="onImgBtnClick()"
@@ -214,6 +216,7 @@
     </app-card-edit-btn>
     <input
       class="stripe-color-ring rounded-2xl p-3 ring-2 focus:outline-none"
+      name="Image URL"
       type="text"
       placeholder="Image URL"
       (keydown.enter)="onImageUrlSubmit($event)"
@@ -221,7 +224,7 @@
       [ngClass]="showImgUrlInput ? 'block' : 'hidden'"
     />
     <app-card-edit-btn
-      class="relative [&.invisible]:hidden"
+      class="relative w-fit [&.invisible]:hidden"
       label="Notes"
       [addOrRemove]="event.notes === null ? 'Add' : 'Remove'"
       (click)="onNotesBtnClick()"
