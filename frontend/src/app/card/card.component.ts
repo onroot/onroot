@@ -1,12 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    viewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, viewChild } from '@angular/core';
 import { ExtendedEvent } from '../shared/models/event';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +7,11 @@ import { DateTime } from 'luxon';
 import { NgClass } from '@angular/common';
 import { CardEditBtnComponent } from '../card-edit-btn/card-edit-btn.component';
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import { TimeStrPipe } from '../time-str.pipe';
+import { debounce } from 'lodash';
+import { MapsService } from '../maps.service';
+import { PlaceSuggestionsComponent } from '../place-suggestions/place-suggestions.component';
+import { Place } from '../shared/models/place';
 
 @Component({
     selector: 'app-card',
@@ -25,6 +22,8 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
         CdkTextareaAutosize,
         NgClass,
         CardEditBtnComponent,
+        TimeStrPipe,
+        PlaceSuggestionsComponent,
     ],
     templateUrl: './card.component.html',
     styleUrl: './card.component.css',
@@ -70,35 +69,24 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
         ]),
     ],
 })
-export class CardComponent implements OnInit {
+export class CardComponent {
     @Input({ required: true }) event!: ExtendedEvent;
+    @Input({ required: true }) globalLock!: boolean;
     @Output() updateEvent = new EventEmitter<ExtendedEvent>();
+    @Output() deleteEvent = new EventEmitter<void>();
 
     parentElement = viewChild<ElementRef>('parent');
-    isLocked = false; //temp false
+    isLocked = true; //temp false
+    explicitShowTime = false;
 
-    ngOnInit(): void {
-        console.log('created card!');
-    }
-
-    getTime(time: number | null): string {
-        if (time === null) return '';
-        return DateTime.fromSeconds(time).toLocaleString(DateTime.TIME_SIMPLE);
-    }
-
-    private explicitShowTime = false;
-    showTime(): boolean {
-        return (
-            this.event.startTime !== null || this.event.endTime !== null || this.explicitShowTime
-        );
-    }
+    constructor(private mapsService: MapsService) {}
 
     onFocusIn(): void {
+        if (this.globalLock) return;
         this.isLocked = false;
     }
 
-    onFocusOut(event: FocusEvent): void {
-        const relatedTarget = event.relatedTarget as HTMLElement | null;
+    onFocusOut(relatedTarget: EventTarget | null): void {
         if (relatedTarget && this.parentElement()?.nativeElement.contains(relatedTarget)) {
             return;
         }
@@ -108,9 +96,9 @@ export class CardComponent implements OnInit {
     }
 
     onLocationBtnClick(): void {
-        const patch = this.event.placeName === null ? '' : null;
+        const placeName = this.event.placeName === null ? '' : null;
         this.updateEvent.emit(
-            this.event.clone().update({ placeId: patch, placeName: patch, placeRouteUrl: patch }),
+            this.event.clone().update({ placeId: null, placeName, placeRouteUrl: null }),
         );
     }
 
@@ -150,6 +138,41 @@ export class CardComponent implements OnInit {
         this.updateEvent.emit(this.event.clone().update({ notes }));
     }
 
+    onDeleteBtnClick(): void {
+        this.deleteEvent.emit();
+    }
+
+    showPlaceSuggestions = false;
+    placeSuggestions: Place[] = [];
+    onLocationFieldChange(placeName: string): void {
+        this.debounceOnLocationFieldChange(placeName);
+    }
+
+    private debounceOnLocationFieldChange = debounce(async (placeName: string) => {
+        this.updateEvent.emit(
+            this.event.clone().update({ placeId: null, placeName, placeRouteUrl: null }),
+        );
+        if (placeName === '') return;
+
+        const places = await this.mapsService.fetchPlaceResults(placeName);
+        this.placeSuggestions = places;
+        this.showPlaceSuggestions = true;
+    }, 500);
+
+    suggestionsElement = viewChild<ElementRef>('suggestions');
+    onLocationFieldBlur(relatedTarget: EventTarget | null): void {
+        if (relatedTarget === this.suggestionsElement()?.nativeElement) {
+            return;
+        }
+        this.showPlaceSuggestions = false;
+    }
+
+    onSuggestionClick({ placeId, placeName }: Place): void {
+        const placeRouteUrl = this.mapsService.generateDirectionsUrl({ placeId, placeName });
+        this.updateEvent.emit(this.event.clone().update({ placeId, placeName, placeRouteUrl }));
+        this.showPlaceSuggestions = false;
+    }
+
     onTimeChange({
         startTime = this.event.startTime,
         endTime = this.event.endTime,
@@ -168,6 +191,7 @@ export class CardComponent implements OnInit {
     }
 
     onInvisibleSpaceFocus(): void {
-        this.isLocked = true;
+        this.onFocusOut(null);
     }
+
 }

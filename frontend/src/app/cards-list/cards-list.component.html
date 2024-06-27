@@ -1,0 +1,98 @@
+<div class="mb-10" #parent>
+  <div
+    class="flex flex-col"
+    cdkDropList
+    [cdkDropListData]="eventsSig()"
+    (cdkDropListDropped)="drop($event)"
+    cdkDropListAutoScrollStep="5"
+  >
+    @for (event of eventsSig(); track event.id) {
+      <app-card
+        class="my-5 block"
+        cdkDrag
+        [cdkDragData]="event"
+        [cdkDragStartDelay]="350"
+        (cdkDragStarted)="onDragStart()"
+        (cdkDragEnded)="onDragEnd()"
+        [globalLock]="globalLock"
+        [event]="event"
+        (updateEvent)="updateEvent($index, $event)"
+        (deleteEvent)="deleteEvent($index)"
+      >
+        <div
+          class="flex size-40 flex-col overflow-hidden rounded-3xl shadow-xl"
+          *cdkDragPreview
+        >
+          <div class="h-4 bg-gray-400"></div>
+          <div
+            class="flex h-full flex-col items-center justify-around bg-app-card-color p-4"
+          >
+            <div class="h-5 w-full rounded-2xl bg-gray-300"></div>
+            <div class="h-5 w-full rounded-2xl bg-gray-300"></div>
+            <div class="h-5 w-full rounded-2xl bg-gray-300"></div>
+          </div>
+        </div>
+        <app-card
+          class="my-5 block"
+          [globalLock]="true"
+          [event]="event"
+          *cdkDragPlaceholder
+        />
+      </app-card>
+      @if (
+        $index < $count - 1 &&
+        event.placeId !== null &&
+        event.endTime !== null &&
+        eventsSig()[$index + 1].placeId !== null &&
+        eventsSig()[$index + 1].startTime !== null
+      ) {
+        <app-commute-widget
+          class="max-w-xs self-center"
+          [ngClass]="showCommute ? 'visible' : 'invisible'"
+          [commuteContext]="{
+            originId: event.placeId,
+            destinationId: eventsSig()[$index + 1].placeId!,
+            originDepartureTime: event.endTime,
+            destinationArrivalTime: eventsSig()[$index + 1].startTime!,
+          }"
+        />
+      }
+    }
+  </div>
+  <div class="my-5 flex flex-row justify-center gap-4 image-export-ignore">
+    <app-mini-card-button (click)="onNewCardBtnClick()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="3"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 4.5v15m7.5-7.5h-15"
+        />
+      </svg>
+    </app-mini-card-button>
+    @if (eventsSig().at(0); as event) {
+      <app-mini-card-button (click)="onReturnToFirstEventBtnClick(event)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3"
+          />
+        </svg>
+      </app-mini-card-button>
+    }
+  </div>
+</div>

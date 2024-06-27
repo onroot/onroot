@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CardsComponent } from '../cards/cards.component';
+import { CardsListComponent } from '../cards-list/cards-list.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MockEventDataService } from '../mock-event-data.service';
 import { UrlExportableEvent, UrlExportableEventSchema } from '../shared/models/event';
@@ -9,11 +9,13 @@ import qs from 'qs';
 @Component({
     selector: 'app-create-page',
     standalone: true,
-    imports: [CardsComponent, RouterLink],
+    imports: [CardsListComponent, RouterLink],
     templateUrl: './create-page.component.html',
     styleUrl: './create-page.component.css',
 })
 export class CreatePageComponent implements OnInit {
+    globalLock = false;
+
     constructor(
         private eventsService: EventsService,
         private route: ActivatedRoute,
@@ -21,22 +23,14 @@ export class CreatePageComponent implements OnInit {
         private mockEventData: MockEventDataService,
     ) {}
 
-    changeFirstTitle() {
-        this.eventsService.getEvents()()[0].title = 'changed!!';
-    }
-
-    getFirstTitle() {
-        return this.eventsService.getEvents()()[0].title;
-    }
-
-    changeFirstTime() {
-        this.eventsService.getEvents()()[0].startTime = 2389042;
-    }
-
     ngOnInit(): void {
         // this.consumeParamEvents();
         // add mock data for now
         this.mockEventData.asArr().map((e) => this.eventsService.addUrlExportableEvent(e));
+    }
+
+    toggleLock(): void {
+        this.globalLock = !this.globalLock;
     }
 
     // mock function to add events. page needs to be reloaded as well.
