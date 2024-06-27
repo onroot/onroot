@@ -1,29 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nav-Bar</title>
-</head>
-<body>
-  <nav class="shadow-lg bg-white flex justify-between mx-auto px-10 py-4 font-bold">
-    <div class=" bg-white min-h-fit left-0 w-auto flex items-center gap-x-12">
-      <a routerLink="/create">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-        </svg>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nav-Bar</title>
+  </head>
+  <body>
+    <nav
+      class="mx-auto flex justify-between bg-white px-10 py-4 font-bold shadow-lg"
+    >
+      <div class="left-0 flex min-h-fit w-auto items-center gap-x-12 bg-white">
+        <a routerLink="/create">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+            />
+          </svg>
 
-        <!-- <img class="w-16 pr-10" src="https://content.presentermedia.com/files/clipart/00028000/28698/happy_emoji_face_800_wht.jpg" alt=""> -->
-      </a>
-      <ul class="flex items-center gap-[4vw]">
-        <li><a (click)="openNew()" class="hover:text-gray-500">New</a></li>
-        <li><a (click)="openSave()" class="hover:text-gray-500">Save / Export</a></li>
-        <li><a routerLink="" class="hover:text-gray-500">Show Map</a></li>
-      </ul>
-    </div>
-    <div class="flex">
-      <button class="">Lock</button>
-    </div>
-  </nav>
-</body>
+          <!-- <img class="w-16 pr-10" src="https://content.presentermedia.com/files/clipart/00028000/28698/happy_emoji_face_800_wht.jpg" alt=""> -->
+        </a>
+        <ul class="flex items-center gap-[4vw]">
+          <li><a (click)="openNew()" class="hover:text-gray-500">New</a></li>
+          <li>
+            <a (click)="openSave()" class="hover:text-gray-500"
+              >Save / Export</a
+            >
+          </li>
+          <li><a routerLink="" class="hover:text-gray-500">Show Map</a></li>
+        </ul>
+      </div>
+      <div class="flex">
+        <button class="">Lock</button>
+      </div>
+    </nav>
+  </body>
 </html>

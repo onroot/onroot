@@ -3,21 +3,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SavePageComponent } from './save-page.component';
 
 describe('SavePageComponent', () => {
-  let component: SavePageComponent;
-  let fixture: ComponentFixture<SavePageComponent>;
+    let component: SavePageComponent;
+    let fixture: ComponentFixture<SavePageComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [SavePageComponent]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [SavePageComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(SavePageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(SavePageComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

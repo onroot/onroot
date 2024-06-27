@@ -5,23 +5,19 @@ import { NewItineraryPageComponent } from '../new-itinerary-page/new-itinerary-p
 import { SavePageComponent } from '../save-page/save-page.component';
 
 @Component({
-  selector: 'app-nav-bar',
-  standalone: true,
-  imports: [RouterOutlet, RouterModule],
-  templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css'
+    selector: 'app-nav-bar',
+    standalone: true,
+    imports: [RouterOutlet, RouterModule],
+    templateUrl: './nav-bar.component.html',
+    styleUrl: './nav-bar.component.css',
 })
 export class NavBarComponent {
+    constructor(private dialogRef: MatDialog) {}
 
-    constructor(private dialogRef: MatDialog){
-
-    }
-
-    openNew(){
+    openNew() {
         this.dialogRef.open(NewItineraryPageComponent);
     }
-    openSave(){
+    openSave() {
         this.dialogRef.open(SavePageComponent);
     }
-    
 }

@@ -9,7 +9,7 @@ import { environment } from '../environments/environment.development';
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet, NavBarComponent, RouterModule, MatDialogModule]
+    imports: [RouterOutlet, NavBarComponent, RouterModule, MatDialogModule],
 })
 export class AppComponent implements OnInit {
     title = 'onroot';

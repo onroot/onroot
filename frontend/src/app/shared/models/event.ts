@@ -78,16 +78,16 @@ export class SimpleEvent {
         });
     }
 
-    toJSON(){
-       return {
-        title: this.title,
-        placeId: this.placeId,
-        placeName: this.placeName,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        imgUrl: this.imgUrl,
-        notes: this.notes,
-       }
+    toJSON() {
+        return {
+            title: this.title,
+            placeId: this.placeId,
+            placeName: this.placeName,
+            startTime: this.startTime,
+            endTime: this.endTime,
+            imgUrl: this.imgUrl,
+            notes: this.notes,
+        };
     }
 }
 

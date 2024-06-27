@@ -5,7 +5,7 @@ import { SavePageComponent } from './save-page/save-page.component';
 
 export const routes: Routes = [
     { path: 'create', title: 'OnRoot - Create Itinerary', component: CreatePageComponent },
-    { path: 'new_itinerary', component: NewItineraryPageComponent},
-    { path: 'save', component: SavePageComponent},
+    { path: 'new_itinerary', component: NewItineraryPageComponent },
+    { path: 'save', component: SavePageComponent },
     { path: '**', redirectTo: 'create' },
 ];
