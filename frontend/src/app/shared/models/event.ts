@@ -8,9 +8,9 @@ export const UrlExportableEventSchema = z.object({
     /** placeName */
     p: z.string().nullable().default(null),
     /** start time */
-    s: z.coerce.number().min(0).max(1440).nullable().default(null),
+    s: z.coerce.number().min(0).nullable().default(null),
     /** end time */
-    e: z.coerce.number().min(0).max(1440).nullable().default(null),
+    e: z.coerce.number().min(0).nullable().default(null),
     /** image url */
     i: z.string().nullable().default(null),
     /** notes */
@@ -37,7 +37,7 @@ export class SimpleEvent {
         imgUrl = null,
         notes = null,
     }: {
-        title: string;
+        title?: string;
         placeId?: string | null;
         placeName?: string | null;
         startTime?: number | null;
@@ -84,17 +84,17 @@ export class ExtendedEvent extends SimpleEvent {
     public placeRouteUrl: string | null;
 
     constructor({
-        title = 'Untitled',
-        placeId = null,
-        placeName = null,
-        startTime = null,
-        endTime = null,
-        imgUrl = null,
-        notes = null,
+        title,
+        placeId,
+        placeName,
+        startTime,
+        endTime,
+        imgUrl,
+        notes,
         id,
         placeRouteUrl = null,
     }: {
-        title: string;
+        title?: string;
         placeId?: string | null;
         placeName?: string | null;
         startTime?: number | null;
@@ -111,7 +111,7 @@ export class ExtendedEvent extends SimpleEvent {
 
     static fromSimpleEvent(
         simpleEvent: SimpleEvent,
-        { id, placeRouteUrl = null }: { id: number; placeRouteUrl?: string | null },
+        { id, placeRouteUrl }: { id: number; placeRouteUrl?: string | null },
     ): ExtendedEvent {
         return new ExtendedEvent({
             title: simpleEvent.title,
