@@ -193,5 +193,4 @@ export class CardComponent {
     onInvisibleSpaceFocus(): void {
         this.onFocusOut(null);
     }
-
 }

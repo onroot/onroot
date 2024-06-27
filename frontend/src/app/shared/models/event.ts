@@ -77,6 +77,18 @@ export class SimpleEvent {
             notes: e.n,
         });
     }
+
+    toJSON() {
+        return {
+            title: this.title,
+            placeId: this.placeId,
+            placeName: this.placeName,
+            startTime: this.startTime,
+            endTime: this.endTime,
+            imgUrl: this.imgUrl,
+            notes: this.notes,
+        };
+    }
 }
 
 export class ExtendedEvent extends SimpleEvent {
