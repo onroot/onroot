@@ -1,4 +1,4 @@
-<div class="mb-10">
+<div class="mb-10" #parent>
   <div
     class="flex flex-col"
     cdkDropList
@@ -59,7 +59,7 @@
       }
     }
   </div>
-  <div class="my-5 flex flex-row justify-center gap-4">
+  <div class="my-5 flex flex-row justify-center gap-4 image-export-ignore">
     <app-mini-card-button (click)="onNewCardBtnClick()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
