@@ -1,9 +1,9 @@
-<div class="flex flex-col justify-center text-center gap-10 pt-12 font-bold">
+<div class="flex flex-col justify-center text-center gap-10 pt-12 font-bold pb-10 px-5">
   <h1>Remember to save/export your current itinerary</h1>
-  <a routerLink="/save"><button class="bg-gray-700 text-white h-12 mx-auto px-5 rounded-lg">Save / Export</button></a>
+  <a (click)="openSave()"><button class="bg-gray-700 text-white h-12 mx-auto px-5 rounded-lg">Save / Export</button></a>
   <hr class=" w-1/2 border-0 h-2 bg-gray-500 my-4 mx-auto flex rounded-lg">
   <a routerLink="/create"><button class="bg-red-700 text-white h-12 mx-auto px-5 rounded-lg">Discard Itinerary and Create a New One</button></a>
   <button (click)="triggerFileInput()" class="bg-red-700 text-white h-12 mx-auto px-5 rounded-lg">Discard Itinerary and Import from JSON</button>
-  <input type="file" id="fileInput" (change)="loadURLFromJSON($event)" class="hidden">
+  <input type="file" id="fileInput" (change)="loadFromJSON($event)" class="hidden" accept=".JSON">
 </div>
 

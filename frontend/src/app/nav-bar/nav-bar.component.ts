@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
-
+import { MatDialog } from '@angular/material/dialog';
+import { NewItineraryPageComponent } from '../new-itinerary-page/new-itinerary-page.component';
+import { SavePageComponent } from '../save-page/save-page.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,4 +13,15 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 })
 export class NavBarComponent {
 
+    constructor(private dialogRef: MatDialog){
+
+    }
+
+    openNew(){
+        this.dialogRef.open(NewItineraryPageComponent);
+    }
+    openSave(){
+        this.dialogRef.open(SavePageComponent);
+    }
+    
 }

@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { EventsService } from '../events.service';
+import { ExtendedEvent, SimpleEvent, UrlExportableEvent } from '../shared/models/event';
+import qs from 'qs';
 
 @Component({
   selector: 'app-save-page',
@@ -8,34 +11,39 @@ import { Component } from '@angular/core';
 })
 export class SavePageComponent {
 
-    copyURL(element: HTMLElement):void{
-        const currentUrl = window.location.href;
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(currentUrl)
-              .then(() => {
-                element.textContent = 'URL Copied!';
-              })
-              .catch((err) => {
-                console.error('Failed to copy URL: ', err);
-              });
-          }
+    constructor(private eventService : EventsService){
+
     }
 
-    saveURLToJSON(): void {
-        const currentUrl = window.location.href;
-        const data = {
-          url: currentUrl
-        };
-        const jsonString = JSON.stringify(data, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
+    copyURL(element: HTMLElement):void{
+        const data: ExtendedEvent[] = this.eventService.getEvents()();
+        const URLData: UrlExportableEvent[] = data.map((data) => data.toUrlExportableEvent());
+        const URLString: string = qs.stringify(URLData);
+
+        const hostname: string = window.location.hostname;
+        const temp: string = "/create?events="
+        const URL: string = hostname.concat(temp.concat(URLString));
+        navigator.clipboard.writeText(URL);
+        element.textContent = "URL copied!";
+    }
+
+    saveToJSON(): void {
+        const data: ExtendedEvent[] = this.eventService.getEvents()();
+        const JSONData = data.map((data) => data.toJSON());
+        const finalJSON: string = JSON.stringify(JSONData);
+        console.log(finalJSON);
+        const blob = new Blob([finalJSON]);
+        const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'url.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        link.href = url;
+        link.download = 'itinerary.json';
+        document.body.appendChild(link);
+        link.click(); //trigger download
+        document.body.removeChild(link);
         URL.revokeObjectURL(url);
+
       }
+
+
 
 }
