@@ -1,0 +1,12 @@
+<div
+  class="select-none rounded-md border-[1px] border-gray-400 bg-app-card-color shadow-xl"
+>
+  @for (place of places; track place.placeId) {
+    <button
+      class="w-full overflow-clip text-ellipsis text-nowrap border-b-[1px] border-gray-300 px-4 py-2 text-left font-semibold hover:bg-gray-200"
+      (click)="suggestionClick.emit(place)"
+    >
+      {{ place.placeName }}
+    </button>
+  }
+</div>

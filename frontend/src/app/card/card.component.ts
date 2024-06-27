@@ -8,6 +8,10 @@ import { NgClass } from '@angular/common';
 import { CardEditBtnComponent } from '../card-edit-btn/card-edit-btn.component';
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
 import { TimeStrPipe } from '../time-str.pipe';
+import { debounce } from 'lodash';
+import { MapsService } from '../maps.service';
+import { PlaceSuggestionsComponent } from '../place-suggestions/place-suggestions.component';
+import { Place } from '../shared/models/place';
 
 @Component({
     selector: 'app-card',
@@ -19,6 +23,7 @@ import { TimeStrPipe } from '../time-str.pipe';
         NgClass,
         CardEditBtnComponent,
         TimeStrPipe,
+        PlaceSuggestionsComponent,
     ],
     templateUrl: './card.component.html',
     styleUrl: './card.component.css',
@@ -68,24 +73,20 @@ export class CardComponent {
     @Input({ required: true }) event!: ExtendedEvent;
     @Input({ required: true }) globalLock!: boolean;
     @Output() updateEvent = new EventEmitter<ExtendedEvent>();
+    @Output() deleteEvent = new EventEmitter<void>();
 
     parentElement = viewChild<ElementRef>('parent');
-    isLocked = false; //temp false
+    isLocked = true; //temp false
+    explicitShowTime = false;
 
-    private explicitShowTime = false;
-    showTime(): boolean {
-        return (
-            this.event.startTime !== null || this.event.endTime !== null || this.explicitShowTime
-        );
-    }
+    constructor(private mapsService: MapsService) {}
 
     onFocusIn(): void {
         if (this.globalLock) return;
         this.isLocked = false;
     }
 
-    onFocusOut(event: FocusEvent | null): void {
-        const relatedTarget = event?.relatedTarget as HTMLElement | null;
+    onFocusOut(relatedTarget: EventTarget | null): void {
         if (relatedTarget && this.parentElement()?.nativeElement.contains(relatedTarget)) {
             return;
         }
@@ -95,9 +96,9 @@ export class CardComponent {
     }
 
     onLocationBtnClick(): void {
-        const patch = this.event.placeName === null ? '' : null;
+        const placeName = this.event.placeName === null ? '' : null;
         this.updateEvent.emit(
-            this.event.clone().update({ placeId: patch, placeName: patch, placeRouteUrl: patch }),
+            this.event.clone().update({ placeId: null, placeName, placeRouteUrl: null }),
         );
     }
 
@@ -135,6 +136,41 @@ export class CardComponent {
     onNotesBtnClick(): void {
         const notes = this.event.notes === null ? '' : null;
         this.updateEvent.emit(this.event.clone().update({ notes }));
+    }
+
+    onDeleteBtnClick(): void {
+        this.deleteEvent.emit();
+    }
+
+    showPlaceSuggestions = false;
+    placeSuggestions: Place[] = [];
+    onLocationFieldChange(placeName: string): void {
+        this.debounceOnLocationFieldChange(placeName);
+    }
+
+    private debounceOnLocationFieldChange = debounce(async (placeName: string) => {
+        this.updateEvent.emit(
+            this.event.clone().update({ placeId: null, placeName, placeRouteUrl: null }),
+        );
+        if (placeName === '') return;
+
+        const places = await this.mapsService.fetchPlaceResults(placeName);
+        this.placeSuggestions = places;
+        this.showPlaceSuggestions = true;
+    }, 500);
+
+    suggestionsElement = viewChild<ElementRef>('suggestions');
+    onLocationFieldBlur(relatedTarget: EventTarget | null): void {
+        if (relatedTarget === this.suggestionsElement()?.nativeElement) {
+            return;
+        }
+        this.showPlaceSuggestions = false;
+    }
+
+    onSuggestionClick({ placeId, placeName }: Place): void {
+        const placeRouteUrl = this.mapsService.generateDirectionsUrl({ placeId, placeName });
+        this.updateEvent.emit(this.event.clone().update({ placeId, placeName, placeRouteUrl }));
+        this.showPlaceSuggestions = false;
     }
 
     onTimeChange({

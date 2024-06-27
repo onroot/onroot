@@ -28,6 +28,12 @@ export class EventsService {
         ]);
     }
 
+    // Overrides id
+    addEvent(extendedEvent: ExtendedEvent): void {
+        extendedEvent.update({ id: ++this.newId });
+        this.eventsSig.update((prevEvents) => [...prevEvents, extendedEvent]);
+    }
+
     addSimpleEvent(simpleEvent: SimpleEvent): void {
         const extendedEvent = ExtendedEvent.fromSimpleEvent(simpleEvent, { id: ++this.newId });
         this.eventsSig.update((prevEvents) => [...prevEvents, extendedEvent]);

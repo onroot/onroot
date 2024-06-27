@@ -13,11 +13,13 @@ export class AppComponent implements OnInit {
     title = 'onroot';
 
     ngOnInit() {
-        this.loadMapsScript().then(() => {});
+        this.loadMapsScript().then(() => {
+            console.log('Google Maps script loaded');
+        });
     }
 
     loadMapsScript() {
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.innerHTML = `
@@ -27,7 +29,6 @@ export class AppComponent implements OnInit {
         });
       `;
             document.getElementsByTagName('body')[0].appendChild(script);
-            console.log('Script Loaded');
             resolve();
         });
     }
