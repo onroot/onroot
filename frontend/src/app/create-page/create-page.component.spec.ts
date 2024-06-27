@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreatePageComponent } from './create-page.component';
+import { RouterModule } from '@angular/router';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreatePageComponent', () => {
     let component: CreatePageComponent;
@@ -8,7 +10,7 @@ describe('CreatePageComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [CreatePageComponent],
+            imports: [CreatePageComponent, RouterModule.forRoot([]), NoopAnimationsModule],
         }).compileComponents();
 
         fixture = TestBed.createComponent(CreatePageComponent);

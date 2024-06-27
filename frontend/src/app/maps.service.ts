@@ -1,3 +1,4 @@
+/// <reference types="@types/google.maps" />
 import { Injectable } from '@angular/core';
 import { Commute } from './shared/models/commute';
 import objectHash from 'object-hash';
