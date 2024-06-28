@@ -26,8 +26,7 @@ export class CommuteWidgetComponent implements OnChanges {
 
     onCommuteContextChange(): void {
         if (this.commuteContext.originDepartureTime < this.commuteContext.destinationArrivalTime) {
-            //temp disabled
-            // this.debouncedGetEstimatedTravelTime();
+            this.debouncedGetEstimatedTravelTime();
         } else {
             this.estimatedTime = null;
         }

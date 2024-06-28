@@ -11,8 +11,6 @@ import qs from 'qs';
 })
 export class MapsService {
     generateDirectionsUrl({ placeId, placeName }: Place): string {
-        console.log('generating url');
-
         const paramsObj = {
             destination: placeName,
             destination_place_id: placeId,
@@ -58,7 +56,6 @@ export class MapsService {
         const commuteHash = objectHash(commute);
         const cachedTime = this.travelTimeCache.get(commuteHash);
         if (cachedTime !== undefined) {
-            console.log('retrieve from cahce!');
             return cachedTime;
         }
 

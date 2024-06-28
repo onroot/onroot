@@ -40,9 +40,15 @@ export class NewItineraryPageComponent {
         }
     }
 
-    addEventsFromJson(jsonString: string) {
+    createNewItinerary(): void {
+        this.eventService.clearEvents();
+    }
+
+    addEventsFromJson(jsonString: string): void {
         const jsonData = JSON.parse(jsonString);
 
+        this.eventService.clearEvents();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         jsonData.forEach((eventData: any) => {
             const simpleEvent = new SimpleEvent({
                 title: eventData.title,

@@ -76,7 +76,7 @@ export class CardComponent {
     @Output() deleteEvent = new EventEmitter<void>();
 
     parentElement = viewChild<ElementRef>('parent');
-    isLocked = true; //temp false
+    isLocked = true;
     explicitShowTime = false;
 
     constructor(private mapsService: MapsService) {}
@@ -133,6 +133,10 @@ export class CardComponent {
         inputElement.value = '';
     }
 
+    onImageUrlBlur(): void {
+        this.showImgUrlInput = false;
+    }
+
     onNotesBtnClick(): void {
         const notes = this.event.notes === null ? '' : null;
         this.updateEvent.emit(this.event.clone().update({ notes }));
@@ -161,9 +165,8 @@ export class CardComponent {
 
     suggestionsElement = viewChild<ElementRef>('suggestions');
     onLocationFieldBlur(relatedTarget: EventTarget | null): void {
-        if (relatedTarget === this.suggestionsElement()?.nativeElement) {
-            return;
-        }
+        if (this.suggestionsElement()?.nativeElement.contains(relatedTarget)) return;
+
         this.showPlaceSuggestions = false;
     }
 

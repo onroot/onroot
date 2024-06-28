@@ -1,23 +1,25 @@
 <div
-  class="flex flex-col justify-center gap-10 px-5 pb-10 pt-12 text-center font-bold"
+  class="flex flex-col justify-around gap-8 bg-app-card-color p-10 text-center font-bold"
 >
-  <h1>Remember to save/export your current itinerary</h1>
-  <a (click)="openSave()"
-    ><button class="mx-auto h-12 rounded-lg bg-gray-700 px-5 text-white">
-      Save / Export
-    </button></a
+  <h1>Remember to save your current itinerary</h1>
+  <button (click)="openSave()">
+    <button class="mx-auto h-12 rounded-lg bg-gray-700 px-5 text-white">
+      Save
+    </button>
+  </button>
+  <hr class="flex h-px rounded-lg border-0 bg-gray-400" />
+  <h1>Discard and...</h1>
+  <button
+    class="mx-auto h-12 rounded-lg bg-red-700 px-5 text-white"
+    (click)="createNewItinerary()"
   >
-  <hr class="mx-auto my-4 flex h-2 w-1/2 rounded-lg border-0 bg-gray-500" />
-  <a routerLink="/create"
-    ><button class="mx-auto h-12 rounded-lg bg-red-700 px-5 text-white">
-      Discard Itinerary and Create a New One
-    </button></a
-  >
+    Create new itinerary
+  </button>
   <button
     (click)="triggerFileInput()"
     class="mx-auto h-12 rounded-lg bg-red-700 px-5 text-white"
   >
-    Discard Itinerary and Import from JSON
+    Import from JSON
   </button>
   <input
     type="file"

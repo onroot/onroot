@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Signal, ViewChild, viewChild } from '@angular/core';
+import { Component, ElementRef, Signal, effect, viewChild } from '@angular/core';
 import { CardComponent } from '../card/card.component';
 import { EventsService } from '../events.service';
 import { ExtendedEvent, SimpleEvent } from '../shared/models/event';
@@ -7,6 +7,8 @@ import { CommuteWidgetComponent } from '../commute-widget/commute-widget.compone
 import { NgClass } from '@angular/common';
 import { MiniCardButtonComponent } from '../mini-card-button/mini-card-button.component';
 import * as htmlToImage from 'html-to-image';
+import { CardLockingService } from '../card-locking.service';
+import { ImageExportService } from '../image-export.service';
 
 @Component({
     selector: 'app-cards-list',
@@ -22,10 +24,21 @@ import * as htmlToImage from 'html-to-image';
     styleUrl: './cards-list.component.css',
 })
 export class CardsListComponent {
-    @Input({ required: true }) globalLock!: boolean;
     eventsSig = this.eventsService.getEvents();
+    imageExportSig = this.imageExportService.getSig();
+    globalLock = this.lockService.isLocked();
 
-    constructor(private eventsService: EventsService) {}
+    constructor(
+        private eventsService: EventsService,
+        private lockService: CardLockingService,
+        private imageExportService: ImageExportService,
+    ) {
+        effect(() => {
+            // Ignore initial signal to export
+            if (this.imageExportSig() === 'initial') return;
+            this.exportToImage();
+        });
+    }
 
     getEvent(index: number): Signal<ExtendedEvent> {
         console.log('get event');

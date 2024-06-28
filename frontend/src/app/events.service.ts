@@ -47,6 +47,10 @@ export class EventsService {
         this.eventsSig.update((events) => [...events.slice(0, index), ...events.slice(index + 1)]);
     }
 
+    clearEvents(): void {
+        this.setEvents([]);
+    }
+
     moveEvent(currentIndex: number, newIndex: number): void {
         if (
             currentIndex < 0 ||

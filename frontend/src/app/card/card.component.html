@@ -252,12 +252,12 @@
       </svg>
     </app-card-edit-btn>
     <input
-      class="stripe-color-ring rounded-2xl p-3 ring-2 focus:outline-none"
+      class="stripe-color-ring w-12 rounded-2xl p-3 ring-2 focus:outline-none lg:w-auto"
       name="Image URL"
       type="text"
       placeholder="Image URL"
       (keydown.enter)="onImageUrlSubmit($event)"
-      (blur)="onImageUrlSubmit($event)"
+      (blur)="onImageUrlBlur()"
       [ngClass]="showImgUrlInput ? 'block' : 'hidden'"
     />
     <app-card-edit-btn

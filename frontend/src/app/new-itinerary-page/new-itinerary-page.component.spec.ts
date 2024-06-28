@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewItineraryPageComponent } from './new-itinerary-page.component';
+import { RouterModule } from '@angular/router';
 
 describe('NewItineraryPageComponent', () => {
     let component: NewItineraryPageComponent;
@@ -8,7 +9,7 @@ describe('NewItineraryPageComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [NewItineraryPageComponent],
+            imports: [NewItineraryPageComponent, RouterModule.forRoot([])],
         }).compileComponents();
 
         fixture = TestBed.createComponent(NewItineraryPageComponent);

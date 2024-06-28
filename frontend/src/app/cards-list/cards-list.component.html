@@ -14,7 +14,7 @@
         [cdkDragStartDelay]="350"
         (cdkDragStarted)="onDragStart()"
         (cdkDragEnded)="onDragEnd()"
-        [globalLock]="globalLock"
+        [globalLock]="globalLock()"
         [event]="event"
         (updateEvent)="updateEvent($index, $event)"
         (deleteEvent)="deleteEvent($index)"
@@ -60,7 +60,7 @@
     }
   </div>
   <div class="image-export-ignore my-5 flex flex-row justify-center gap-4">
-    <app-mini-card-button (click)="onNewCardBtnClick()">
+    <app-mini-card-button title="Add new event" (click)="onNewCardBtnClick()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -77,7 +77,10 @@
       </svg>
     </app-mini-card-button>
     @if (eventsSig().at(0); as event) {
-      <app-mini-card-button (click)="onReturnToFirstEventBtnClick(event)">
+      <app-mini-card-button
+        title="Clone first event"
+        (click)="onReturnToFirstEventBtnClick(event)"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
