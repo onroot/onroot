@@ -1,0 +1,103 @@
+<nav
+  class="mx-auto flex min-w-80 items-center justify-center space-x-5 bg-white py-4 font-semibold shadow-lg sm:space-x-10 [@media(min-width:325px)]:justify-start [@media(min-width:325px)]:px-10"
+>
+  <div class="cursor-pointer">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      width="24px"
+      height="24px"
+      viewBox="0 0 24 23"
+      version="1.1"
+      class="shadow-sm drop-shadow-md"
+    >
+      <defs>
+        <linearGradient
+          id="linear0"
+          gradientUnits="userSpaceOnUse"
+          x1="-80"
+          y1="-46.5"
+          x2="332.5"
+          y2="72.5"
+          gradientTransform="matrix(0.0805369,0,0,0.0774411,0,0)"
+        >
+          <stop
+            offset="0"
+            style="
+              stop-color: rgb(36.078431%, 100%, 96.078431%);
+              stop-opacity: 1;
+            "
+          />
+          <stop
+            offset="1"
+            style="stop-color: rgb(0%, 52.941176%, 49.803922%); stop-opacity: 1"
+          />
+        </linearGradient>
+      </defs>
+      <g id="surface1">
+        <path
+          style="
+            stroke: none;
+            fill-rule: nonzero;
+            fill: rgb(93.72549%, 96.470588%, 100%);
+            fill-opacity: 1;
+          "
+          d="M 0 4.257812 L 24 4.257812 L 24 19.128906 C 24 21.265625 22.195312 23 19.972656 23 L 4.027344 23 C 1.804688 23 0 21.265625 0 19.128906 Z M 0 4.257812 "
+        />
+        <path
+          style="
+            stroke: none;
+            fill-rule: nonzero;
+            fill: rgb(38.039216%, 38.039216%, 38.039216%);
+            fill-opacity: 1;
+          "
+          d="M 4.429688 6.738281 L 19.328125 6.738281 C 19.996094 6.738281 20.535156 7.257812 20.535156 7.898438 C 20.535156 8.539062 19.996094 9.0625 19.328125 9.0625 L 4.429688 9.0625 C 3.761719 9.0625 3.222656 8.539062 3.222656 7.898438 C 3.222656 7.257812 3.761719 6.738281 4.429688 6.738281 Z M 4.429688 6.738281 "
+        />
+        <path
+          style="
+            stroke: none;
+            fill-rule: nonzero;
+            fill: rgb(38.039216%, 38.039216%, 38.039216%);
+            fill-opacity: 1;
+          "
+          d="M 4.429688 11.925781 L 19.328125 11.925781 C 19.996094 11.925781 20.535156 12.445312 20.535156 13.085938 C 20.535156 13.730469 19.996094 14.25 19.328125 14.25 L 4.429688 14.25 C 3.761719 14.25 3.222656 13.730469 3.222656 13.085938 C 3.222656 12.445312 3.761719 11.925781 4.429688 11.925781 Z M 4.429688 11.925781 "
+        />
+        <path
+          style="
+            stroke: none;
+            fill-rule: nonzero;
+            fill: rgb(38.039216%, 38.039216%, 38.039216%);
+            fill-opacity: 1;
+          "
+          d="M 4.429688 17.113281 L 19.328125 17.113281 C 19.996094 17.113281 20.535156 17.632812 20.535156 18.277344 C 20.535156 18.917969 19.996094 19.4375 19.328125 19.4375 L 4.429688 19.4375 C 3.761719 19.4375 3.222656 18.917969 3.222656 18.277344 C 3.222656 17.632812 3.761719 17.113281 4.429688 17.113281 Z M 4.429688 17.113281 "
+        />
+        <path
+          style="stroke: none; fill-rule: nonzero; fill: url(#linear0)"
+          d="M 0 3.871094 C 0 1.734375 1.804688 0 4.027344 0 L 19.972656 0 C 22.195312 0 24 1.734375 24 3.871094 L 24 4.335938 L 0 4.335938 Z M 0 3.871094 "
+        />
+      </g>
+    </svg>
+  </div>
+  <button
+    (click)="openNew()"
+    class="hover:text-gray-500"
+    title="Create new itinerary"
+  >
+    New
+  </button>
+  <button
+    (click)="openSave()"
+    class="hover:text-gray-500"
+    title="Save itinerary"
+  >
+    Save
+  </button>
+  <div class="hidden flex-1 [@media(min-width:325px)]:block"></div>
+  <button
+    title="Lock/unlock event cards"
+    class="hover:text-gray-500"
+    (click)="toggleLock()"
+  >
+    {{ isLocked() ? "Unlock" : "Lock" }}
+  </button>
+</nav>
