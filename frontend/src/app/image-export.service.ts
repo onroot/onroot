@@ -6,7 +6,7 @@ import { Injectable, Signal, computed, signal } from '@angular/core';
 export class ImageExportService {
     private exportSig = signal<'initial' | ''>('initial');
 
-    getSig(): Signal<{}> {
+    getSig(): Signal<'initial' | ''> {
         return computed(() => this.exportSig());
     }
 

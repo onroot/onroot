@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Signal, effect, viewChild } from '@angular/core';
+import { Component, ElementRef, Signal, effect, viewChild } from '@angular/core';
 import { CardComponent } from '../card/card.component';
 import { EventsService } from '../events.service';
 import { ExtendedEvent, SimpleEvent } from '../shared/models/event';

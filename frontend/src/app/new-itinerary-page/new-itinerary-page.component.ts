@@ -48,6 +48,7 @@ export class NewItineraryPageComponent {
         const jsonData = JSON.parse(jsonString);
 
         this.eventService.clearEvents();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         jsonData.forEach((eventData: any) => {
             const simpleEvent = new SimpleEvent({
                 title: eventData.title,
