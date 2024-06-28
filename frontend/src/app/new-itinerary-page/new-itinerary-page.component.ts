@@ -40,9 +40,14 @@ export class NewItineraryPageComponent {
         }
     }
 
-    addEventsFromJson(jsonString: string) {
+    createNewItinerary(): void {
+        this.eventService.clearEvents();
+    }
+
+    addEventsFromJson(jsonString: string): void {
         const jsonData = JSON.parse(jsonString);
 
+        this.eventService.clearEvents();
         jsonData.forEach((eventData: any) => {
             const simpleEvent = new SimpleEvent({
                 title: eventData.title,

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CardsListComponent } from '../cards-list/cards-list.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MockEventDataService } from '../mock-event-data.service';
 import { UrlExportableEvent, UrlExportableEventSchema } from '../shared/models/event';
 import { EventsService } from '../events.service';
 import qs from 'qs';
@@ -14,41 +13,41 @@ import qs from 'qs';
     styleUrl: './create-page.component.css',
 })
 export class CreatePageComponent implements OnInit {
-    globalLock = false;
-
     constructor(
         private eventsService: EventsService,
         private route: ActivatedRoute,
         private router: Router,
-        private mockEventData: MockEventDataService,
     ) {}
 
     ngOnInit(): void {
-        // this.consumeParamEvents();
-        // add mock data for now
-        this.mockEventData.asArr().map((e) => this.eventsService.addUrlExportableEvent(e));
-    }
-
-    toggleLock(): void {
-        this.globalLock = !this.globalLock;
-    }
-
-    // mock function to add events. page needs to be reloaded as well.
-    pushQs() {
-        this.router.navigate([], { queryParams: this.mockEventData.asObj() });
+        this.consumeParamEvents();
     }
 
     consumeParamEvents() {
         // Get data from URL
         const queryEvents = this.route.snapshot.queryParamMap.get('events');
+        console.log('Consuming URL...', queryEvents);
+
         // Clear data from URL
         this.router.navigate([], { queryParams: { events: null }, queryParamsHandling: 'merge' });
-        if (queryEvents === null) return;
+        if (queryEvents === null) {
+            console.log('No events key');
+            return;
+        }
 
         // Validate data
-        const parsedQueryEvents = qs.parse(queryEvents, { allowDots: true })['0'] as unknown[];
+        const parsedQueryEvents = qs.parse(queryEvents, { allowDots: true, arrayLimit: 100 })[
+            '0'
+        ] as unknown[];
+        console.log(parsedQueryEvents);
+
         const validatedEvents = UrlExportableEventSchema.array().safeParse(parsedQueryEvents);
-        if (validatedEvents.data === undefined) return;
+        if (validatedEvents.data === undefined) {
+            console.error('Malformed event data');
+            console.log(validatedEvents.error.cause);
+
+            return;
+        }
 
         // Add events
         validatedEvents.data.map((event: UrlExportableEvent) =>
