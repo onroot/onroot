@@ -26,9 +26,10 @@ export class SavePageComponent {
             { skipNulls: true },
         );
 
+        const protocol = window.location.protocol;
         const host = window.location.host;
         const queryParams = new URLSearchParams({ events: encodedExportableEvents });
-        const url = `${host}/create?${queryParams.toString()}`;
+        const url = `${protocol}//${host}/create?${queryParams.toString()}`;
 
         navigator.clipboard.writeText(url);
         element.textContent = 'URL copied!';
