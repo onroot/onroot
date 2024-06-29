@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { environment } from '../environments/environment.development';
+import { environment } from '../environments/environment';
 
 @Component({
     selector: 'app-root',
