@@ -1,16 +1,13 @@
-<a href="https://onroot.pages.dev/" alt="Website Link" style="text-decoration: none"><h1 align="center">OnRoot 🗓️</h1></a>
+<h1 align="center">OnRoot 🗓️</h1>
 
-<h4 align="center">Create card-based itineraries that you can share by URL or image.</h4>
+<h4 align="center">Create card-based itineraries that you can share by URL or image.<a href="https://onroot.pages.dev/" alt="Website Link" style="text-decoration: none"> Try it yourself!</a></h4>
 
 <p align="center">
 <a href="https://www.typescriptlang.org/" alt="Typescript Website" style="text-decoration: none">
-    <img alt="Static Badge" src="https://img.shields.io/badge/Language%20-Typescript%20|%20Angular-red?style=for-the-badge&labelColor=%234c4f69&color=%23209fb5
-    ">
+    <img alt="Static Badge" src="https://img.shields.io/badge/Language-Typescript_%7C_Angular-white?style=for-the-badge&labelColor=%234c4f69&color=%23179299">
 </a>
 <a href="https://onroot.pages.dev" alt="CloudFlare Page deployed Website" style="text-decoration: none">
-    <img alt="Static Badge" src="https://img.shields.io/website?url=https%3A%2F%2Fonroot.pages.dev&up_message=online&up_color=%23B598F5&down_color=%23F598B1&style=for-the-badge&logo=cloudflare&logoColor=white&labelColor=%234c4f69
-">
-</a>
+    <img alt="Static Badge" src="https://img.shields.io/website?url=https%3A%2F%2Fonroot.pages.dev%2F&up_message=online&up_color=%23B598F5&down_color=%23F598B1&style=for-the-badge&logo=cloudflare&logoColor=white&labelColor=%234c4f69"></a>
 <a href="https://github.com/onroot/onroot/commits/main/" alt="Created At" style="text-decoration: none">
     <img alt="Static Badge" src="https://img.shields.io/github/created-at/onroot/onroot?style=for-the-badge&logo=github&labelColor=%234c4f69&color=%23df8e1d">
 </a>
@@ -39,7 +36,7 @@
 <h2 id="technologies">⚙️ Technologies</h2>
 <ul>
 <li><a href="https://angular.dev/" style="text-decoration: none"><b>Angular</b></a> - Frontend framework.</li>
-<li><a href="https://tailwindcss.com/" style="text-decoration: none"><b>TaildindCSS</b></a> - CSS framework.</li>
+<li><a href="https://tailwindcss.com/" style="text-decoration: none"><b>TailwindCSS</b></a> - CSS framework.</li>
 <li><a href="https://developers.google.com/maps" style="text-decoration: none"><b>Google Maps Platform</b></a> - Route estimation and location search suggestions.</li>
 </ul>
 
