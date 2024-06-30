@@ -1,5 +1,6 @@
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { ExtendedEvent, SimpleEvent, UrlExportableEvent } from './shared/models/event';
+import { MapsService } from './maps.service';
 
 @Injectable({
     providedIn: 'root',
@@ -7,6 +8,8 @@ import { ExtendedEvent, SimpleEvent, UrlExportableEvent } from './shared/models/
 export class EventsService {
     private newId = 0;
     private eventsSig = signal<ExtendedEvent[]>([]);
+
+    constructor(private mapsService: MapsService) {}
 
     getEvents(): Signal<ExtendedEvent[]> {
         return computed(this.eventsSig);
@@ -35,7 +38,17 @@ export class EventsService {
     }
 
     addSimpleEvent(simpleEvent: SimpleEvent): void {
-        const extendedEvent = ExtendedEvent.fromSimpleEvent(simpleEvent, { id: ++this.newId });
+        let placeRouteUrl: string | undefined;
+        if (simpleEvent.placeId !== null && simpleEvent.placeName !== null) {
+            placeRouteUrl = this.mapsService.generateDirectionsUrl({
+                placeId: simpleEvent.placeId,
+                placeName: simpleEvent.placeName,
+            });
+        }
+        const extendedEvent = ExtendedEvent.fromSimpleEvent(simpleEvent, {
+            id: ++this.newId,
+            placeRouteUrl,
+        });
         this.eventsSig.update((prevEvents) => [...prevEvents, extendedEvent]);
     }
 
