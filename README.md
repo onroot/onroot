@@ -1,6 +1,6 @@
 <h1 align="center">OnRoot 🗓️</h1>
 
-<h4 align="center">Create card-based itineraries that you can share by URL or image.<a href="https://onroot.pages.dev/" alt="Website Link" style="text-decoration: none"> Try it yourself!</a></h4>
+<h4 align="center">Create card-based itineraries that you can share by URL or image.<a href="https://onroot.pages.dev/" alt="Website Link" style="text-decoration: none"> Try it yourself!</a> (Disclaimer: Google Maps API features have been disabled.)</h4>
 
 <p align="center">
 <a href="https://www.typescriptlang.org/" alt="Typescript Website" style="text-decoration: none">
